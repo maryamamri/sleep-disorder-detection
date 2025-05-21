@@ -198,6 +198,14 @@ Cette section du notebook nettoie et prépare les données pour l'analyse.
   - Signal normalisé 
   - Graphiques montrant les signaux  après prétraitement
 
+  .. image:: _static/images/avant.png
+    :alt: Avant le pretraitement 
+    :width: 500px
+
+  .. image:: _static/images/apres.png
+    :alt: Apres le pretraitement 
+    :width: 500px
+
 4. Prédiction du signal EMG
 --------------------------
 
@@ -612,6 +620,9 @@ Section 8: Visualisation de l'apprentissage
     plt.savefig('emg_training_loss.png')
     plt.close()
 
+.. image:: _static/images/emg_training_loss.png
+     :alt: Resultat De training loss EMG 
+     :width: 500px
 Ce code crée et sauvegarde un graphique montrant l'évolution de l'erreur d'entraînement et de validation au fil des époques, permettant de visualiser le processus d'apprentissage et de détecter d'éventuels problèmes comme le surapprentissage.
 
 Section 9: Évaluation du modèle
@@ -639,6 +650,10 @@ Section 9: Évaluation du modèle
     rmse = np.sqrt(mse)
     print(f"Erreur quadratique moyenne (MSE): {mse}")
     print(f"Racine de l'erreur quadratique moyenne (RMSE): {rmse}")
+
+.. image:: _static/images/performancesEMG.png
+     :alt: Resultat d'evaluation de Performances 
+     :width: 500px
 
 Ce code évalue les performances du modèle sur l'ensemble de test:
 1. Il génère des prédictions pour les données de test
@@ -790,6 +805,10 @@ Section 11: Visualisation des motifs réels
     plt.savefig('emg_real_patterns.png')
     plt.close()
 
+.. image:: _static/images/emg_real_patterns.png
+     :alt: EMG real patterns 
+     :width: 500px
+
 Ce code visualise quelques segments du signal EMG réel pour comprendre sa variabilité naturelle. Il sélectionne aléatoirement 5 segments (ou moins si les données sont insuffisantes) et les affiche sur un même graphique.
 
 Section 12: Génération et visualisation des prévisions futures
@@ -841,6 +860,9 @@ Section 12: Génération et visualisation des prévisions futures
     plt.tight_layout()
     plt.savefig('emg_distribution_comparison.png')
 
+.. image:: _static/images/emg_future_realistic_forecast.png
+     :alt: emg_future_realistic_forecast 
+     :width: 500px
 Section 13: Sauvegarder les resultats dans un fichier CSV
 ------------------------------------------------------------
 
@@ -875,22 +897,543 @@ Section 9: Évaluation du modèle
 Section 10: Fonction de prévision réaliste
 Section 11: Visualisation des motifs réels
 Section 12: Génération et visualisation des prévisions futures
+section 13: Enregistrement Du predictions dans un csv
+
+.. image:: _static/images/Comparaison.png
+     :alt: Comparaison entre les valeures reels et predits  
+     :width: 500px
+
+.. image:: _static/images/Forcast.png
+     :alt: Forcasting EEG  
+     :width: 500px
+6. Creation d;une Dataframe des predictions 
+--------------------------
+
+.. code-block:: python
+
+  # Charger les fichiers CSV
+    df1 = pd.read_csv(fichier1)
+    df2 = pd.read_csv(fichier2)
+    df = pd.concat([df1, df2], ignore_index=True)
 
 ====================================================================
-Ou bien vous pouvez telecharger le model deja entrainer via le lien 👉 [Télécharger le modèle (.keras)](https://drive.google.com/file/d/1ZKH9WgfoknVqFe2q4FvL_zb96o9EVRid/view?usp=sharing)
+Ou bien vous pouvez telecharger le model deja entrainee via le lien 👉 [Télécharger le modèle (.keras)](https://drive.google.com/file/d/1ZKH9WgfoknVqFe2q4FvL_zb96o9EVRid/view?usp=sharing)
 ====================================================================
 6. Détection des troubles du sommeil
 -----------------------------------
 
 Cette section finale combine les analyses des signaux EEG et EMG pour identifier les troubles du sommeil.
 
-*Code à exécuter* :
+Structure du Package
+===================
 
+Le package est divisé en plusieurs modules:
 
-*Résultat attendu* :
-- Graphique à barres montrant les probabilités de chaque trouble
-- Visualisation des segments de signaux EEG et EMG
-- Hypnogramme approximatif des stades de sommeil
+1. **signal_processing.py**: Fonctions de base pour le traitement du signal
+2. **apnea_detection.py**: Algorithmes pour la détection d'apnée du sommeil
+3. **insomnia_detection.py**: Algorithmes pour la détection d'insomnie
+4. **analysis_utils.py**: Utilitaires d'analyse et fonctions communes
+5. **main.py**: Point d'entrée principal pour l'application
+
+Module: signal_processing.py
+===========================
+
+Ce module contient les fonctions fondamentales pour le traitement des signaux EEG et EMG.
+
+.. code-block:: python
+
+    import numpy as np
+    from scipy.signal import butter, filtfilt
+
+    def bandpass_filter(signal, lowcut, highcut, fs):
+        nyquist = 0.5 * fs
+        low = lowcut / nyquist
+        high = highcut / nyquist
+        
+        # Ensure filter frequencies are within valid range
+        low = max(0.001, min(low, 0.999))
+        high = max(low + 0.001, min(high, 0.999))
+        
+        b, a = butter(4, [low, high], btype='band')
+        return filtfilt(b, a, signal)
+
+Module: apnea_detection.py
+=========================
+
+Ce module implémente les algorithmes pour détecter l'apnée du sommeil à partir des signaux EEG et EMG.
+
+.. code-block:: python
+
+    import numpy as np
+    import pandas as pd
+    from scipy.signal import welch
+    from signal_processing import bandpass_filter
+
+    def detect_apnea(eeg, emg, fs):
+        
+        # Handle potential NaN values
+        eeg = np.nan_to_num(eeg)
+        emg = np.nan_to_num(emg)
+        
+        # Filtrage
+        eeg_filtered = bandpass_filter(eeg, 0.5, 45, fs)
+        emg_filtered = bandpass_filter(emg, 10, 100, fs)
+        
+        # Analyse spectrale EEG (bande alpha : 8–13 Hz)
+        f_eeg, pxx_eeg = welch(eeg_filtered, fs=fs, nperseg=fs*2)
+        alpha_indices = np.where((f_eeg >= 8) & (f_eeg <= 13))
+        alpha_power = np.sum(pxx_eeg[alpha_indices])
+        
+        # Normaliser la puissance alpha par rapport à la puissance totale
+        total_power = np.sum(pxx_eeg)
+        normalized_alpha = alpha_power / total_power if total_power > 0 else 0
+        
+        # Analyse EMG : RMS (amplitude musculaire)
+        emg_rms = np.sqrt(np.mean(emg_filtered ** 2))
+        
+        # Calculer des seuils adaptatifs basés sur les données
+        alpha_threshold = 0.3  # Proportion relative de la puissance alpha
+        emg_threshold = np.percentile(emg_filtered, 25)  # 25ème percentile comme seuil bas
+        
+        # Ajout d'une détection de variation d'EMG (indicateur de micro-éveil)
+        emg_variance = np.var(emg_filtered)
+        
+        # Heuristiques:
+        result = {
+            "alpha_power": normalized_alpha,
+            "emg_rms": emg_rms,
+            "emg_variance": emg_variance
+        }
+        
+        if normalized_alpha > alpha_threshold and emg_rms < emg_threshold and emg_variance > 0.01:
+            result["diagnosis"] = "Apnée"
+        else:
+            result["diagnosis"] = "No Apnée"
+        
+        return result
+
+    def analyze_signal_windows_apnea(df, fs=100, window_size=30):
+      
+        # Copier le dataframe pour ne pas modifier l'original
+        result_df = df.copy()
+        
+        # Calculer le nombre d'échantillons par fenêtre
+        samples_per_window = fs * window_size
+        
+        # Nombre total d'échantillons
+        total_samples = len(df)
+        
+        # Créer des colonnes pour les résultats
+        result_df['Apnee_Status'] = "Non analysé"
+        result_df['Alpha_Power'] = np.nan
+        result_df['EMG_RMS'] = np.nan
+        result_df['EMG_Variance'] = np.nan
+        
+        # Si le dataset est trop petit pour l'analyse par fenêtres
+        if total_samples < samples_per_window:
+            # Analyser l'ensemble du dataset comme une seule fenêtre
+            eeg_data = df['EEG'].values
+            emg_data = df['EMG'].values
+            
+            # Détection d'apnée
+            result = detect_apnea(eeg_data, emg_data, fs)
+            
+            # Remplir toutes les lignes avec le même résultat
+            result_df['Apnee_Status'] = result['diagnosis']
+            result_df['Alpha_Power'] = result['alpha_power']
+            result_df['EMG_RMS'] = result['emg_rms']
+            result_df['EMG_Variance'] = result['emg_variance']
+        else:
+            # Traiter par fenêtres
+            for start_idx in range(0, total_samples, samples_per_window):
+                end_idx = min(start_idx + samples_per_window, total_samples)
+                
+                # Extraire les données de la fenêtre
+                eeg_window = df['EEG'].iloc[start_idx:end_idx].values
+                emg_window = df['EMG'].iloc[start_idx:end_idx].values
+                
+                # Vérifier si la fenêtre est assez grande pour l'analyse
+                if len(eeg_window) < fs:  # Fenêtre trop petite
+                    continue
+                    
+                # Analyser la fenêtre
+                result = detect_apnea(eeg_window, emg_window, fs)
+                
+                # Ajouter les résultats au DataFrame
+                result_df.loc[start_idx:end_idx-1, 'Apnee_Status'] = result['diagnosis']
+                result_df.loc[start_idx:end_idx-1, 'Alpha_Power'] = result['alpha_power']
+                result_df.loc[start_idx:end_idx-1, 'EMG_RMS'] = result['emg_rms']
+                result_df.loc[start_idx:end_idx-1, 'EMG_Variance'] = result['emg_variance']
+        
+        return result_df
+
+Module: insomnia_detection.py
+===========================
+
+Ce module fournit des algorithmes pour la détection d'insomnie à partir des signaux EEG et EMG.
+
+.. code-block:: python
+
+    import numpy as np
+    import pandas as pd
+    from scipy.signal import welch
+    from signal_processing import bandpass_filter
+
+    def detect_insomnia(eeg, emg, fs):
+  
+        # Nettoyage des données
+        eeg = np.nan_to_num(eeg)
+        emg = np.nan_to_num(emg)
+        
+        # Filtrage des signaux
+        eeg_filtered = bandpass_filter(eeg, 0.5, 45, fs)
+        emg_filtered = bandpass_filter(emg, 10, 100, fs)
+        
+        # Analyse spectrale EEG 
+        f_eeg, pxx_eeg = welch(eeg_filtered, fs=fs, nperseg=fs*2)
+        
+        # Extraire différentes bandes de fréquence
+        delta_indices = np.where((f_eeg >= 0.5) & (f_eeg <= 4))
+        theta_indices = np.where((f_eeg >= 4) & (f_eeg <= 8))
+        alpha_indices = np.where((f_eeg >= 8) & (f_eeg <= 13))
+        beta_indices = np.where((f_eeg >= 15) & (f_eeg <= 30))
+        
+        # Calculer la puissance dans chaque bande
+        delta_power = np.sum(pxx_eeg[delta_indices])
+        theta_power = np.sum(pxx_eeg[theta_indices])
+        alpha_power = np.sum(pxx_eeg[alpha_indices])
+        beta_power = np.sum(pxx_eeg[beta_indices])
+        
+        # Calculer les ratios significatifs
+        total_power = np.sum(pxx_eeg)
+        normalized_beta = beta_power / total_power if total_power > 0 else 0
+        beta_delta_ratio = beta_power / delta_power if delta_power > 0 else 999  # Valeur élevée si pas de delta (éveil)
+        
+        # Analyse EMG (tension musculaire)
+        emg_rms = np.sqrt(np.mean(emg_filtered ** 2))  # Niveau global d'activité musculaire
+        emg_variance = np.var(emg_filtered)  # Variabilité (micro-éveils)
+        
+        # Détection des micro-éveils basée sur des pics d'EMG
+        # Calculer la variation rapide de l'EMG (différence d'un échantillon à l'autre)
+        emg_diff = np.diff(emg_filtered)
+        emg_diff = np.append(emg_diff, 0)  # Ajouter un zéro pour conserver la même longueur
+        micro_arousal_count = np.sum(np.abs(emg_diff) > 3 * np.std(emg_diff))  # Nombre de changements brusques
+        
+        # Normaliser le nombre de micro-éveils par durée (par minute)
+        micro_arousal_per_min = micro_arousal_count / (len(emg) / fs / 60)
+        
+        # Seuils - à ajuster selon les données cliniques
+        beta_threshold = 0.25  # Proportion relativement élevée de bêta
+        beta_delta_threshold = 1.5  # Plus de bêta que de delta = éveil/insomnie
+        emg_threshold = np.percentile(emg_filtered, 60)  # Tension musculaire au-dessus de la médiane
+        micro_arousal_threshold = 3  # Plus de 3 micro-éveils par minute
+        
+        # Calculer un score d'insomnie basé sur ces facteurs
+        insomnia_score = 0
+        if normalized_beta > beta_threshold:
+            insomnia_score += 1
+        if beta_delta_ratio > beta_delta_threshold:
+            insomnia_score += 1
+        if emg_rms > emg_threshold:
+            insomnia_score += 1
+        if micro_arousal_per_min > micro_arousal_threshold:
+            insomnia_score += 1
+        
+        # Classification basée sur le score
+        if insomnia_score >= 3:
+            diagnosis = "Insomnie sévère"
+        elif insomnia_score == 2:
+            diagnosis = "Insomnie modérée"
+        elif insomnia_score == 1:
+            diagnosis = "Insomnie légère"
+        else:
+            diagnosis = "Normal"
+        
+        # Résultats détaillés
+        result = {
+            "diagnosis": diagnosis,
+            "insomnia_score": insomnia_score,
+            "beta_power": normalized_beta,
+            "beta_delta_ratio": beta_delta_ratio,
+            "emg_rms": emg_rms,
+            "micro_arousal_per_min": micro_arousal_per_min
+        }
+        
+        return result
+
+    def analyze_signal_windows_insomnia(df, fs=100, window_size=30):
+        
+        # Copier le dataframe pour ne pas modifier l'original
+        result_df = df.copy()
+        
+        # Calculer le nombre d'échantillons par fenêtre
+        samples_per_window = fs * window_size
+        
+        # Nombre total d'échantillons
+        total_samples = len(df)
+        
+        # Créer des colonnes pour les résultats
+        result_df['Insomnie_Status'] = "Non analysé"
+        result_df['Insomnie_Score'] = np.nan
+        result_df['Beta_Power'] = np.nan
+        result_df['Beta_Delta_Ratio'] = np.nan
+        result_df['EMG_Tension'] = np.nan
+        result_df['Micro_Arousals'] = np.nan
+        
+        # Si le dataset est trop petit pour l'analyse par fenêtres
+        if total_samples < samples_per_window:
+            # Analyser l'ensemble du dataset comme une seule fenêtre
+            eeg_data = df['EEG'].values
+            emg_data = df['EMG'].values
+            
+            # Détection d'insomnie
+            result = detect_insomnia(eeg_data, emg_data, fs)
+            
+            # Remplir toutes les lignes avec le même résultat
+            result_df['Insomnie_Status'] = result['diagnosis']
+            result_df['Insomnie_Score'] = result['insomnia_score']
+            result_df['Beta_Power'] = result['beta_power']
+            result_df['Beta_Delta_Ratio'] = result['beta_delta_ratio']
+            result_df['EMG_Tension'] = result['emg_rms']
+            result_df['Micro_Arousals'] = result['micro_arousal_per_min']
+        else:
+            # Traiter par fenêtres
+            for start_idx in range(0, total_samples, samples_per_window):
+                end_idx = min(start_idx + samples_per_window, total_samples)
+                
+                # Extraire les données de la fenêtre
+                eeg_window = df['EEG'].iloc[start_idx:end_idx].values
+                emg_window = df['EMG'].iloc[start_idx:end_idx].values
+                
+                # Vérifier si la fenêtre est assez grande pour l'analyse
+                if len(eeg_window) < fs:  # Fenêtre trop petite
+                    continue
+                    
+                # Analyser la fenêtre
+                result = detect_insomnia(eeg_window, emg_window, fs)
+                
+                # Ajouter les résultats au DataFrame
+                result_df.loc[start_idx:end_idx-1, 'Insomnie_Status'] = result['diagnosis']
+                result_df.loc[start_idx:end_idx-1, 'Insomnie_Score'] = result['insomnia_score']
+                result_df.loc[start_idx:end_idx-1, 'Beta_Power'] = result['beta_power']
+                result_df.loc[start_idx:end_idx-1, 'Beta_Delta_Ratio'] = result['beta_delta_ratio']
+                result_df.loc[start_idx:end_idx-1, 'EMG_Tension'] = result['emg_rms']
+                result_df.loc[start_idx:end_idx-1, 'Micro_Arousals'] = result['micro_arousal_per_min']
+        
+        return result_df
+
+Module: analysis_utils.py
+========================
+
+Ce module fournit des utilitaires pour l'analyse et la sauvegarde des résultats.
+
+.. code-block:: python
+
+    import pandas as pd
+    import numpy as np
+    import os
+    from apnea_detection import analyze_signal_windows_apnea
+    from insomnia_detection import analyze_signal_windows_insomnia
+
+    def analyze_and_save_results(input_dataframe=None, input_file=None, output_file="resultats_analyse_sommeil.csv", fs=100):
+        
+        try:
+            # Charger les données si un dataframe n'est pas fourni directement
+            if input_dataframe is None:
+                if input_file is not None:
+                    print(f"Chargement des données depuis {input_file}")
+                    df = pd.read_csv(input_file)
+                else:
+                    raise ValueError("Vous devez fournir soit un DataFrame, soit un chemin vers un fichier CSV")
+            else:
+                df = input_dataframe
+            
+            # Vérifier la présence des colonnes requises
+            required_columns = ['EEG', 'EMG']
+            for col in required_columns:
+                if col not in df.columns:
+                    raise ValueError(f"La colonne {col} est requise mais n'a pas été trouvée dans les données")
+            
+            print("Analyse des données pour la détection d'apnée...")
+            # Fenêtre de 5 secondes pour l'apnée
+            df_apnee = analyze_signal_windows_apnea(df, fs=fs, window_size=5)
+            
+            print("Analyse des données pour la détection d'insomnie...")
+            # Fenêtre de 30 secondes pour l'insomnie (standard en polysomnographie)
+            df_final = analyze_signal_windows_insomnia(df_apnee, fs=fs, window_size=30)
+            
+            # Calculer des statistiques globales
+            apnee_count = (df_final['Apnee_Status'] == 'Apnée').sum()
+            normal_apnee_count = (df_final['Apnee_Status'] == 'No Apnée').sum()
+            
+            severe_insomnia = (df_final['Insomnie_Status'] == 'Insomnie sévère').sum()
+            moderate_insomnia = (df_final['Insomnie_Status'] == 'Insomnie modérée').sum()
+            mild_insomnia = (df_final['Insomnie_Status'] == 'Insomnie légère').sum()
+            normal_insomnia = (df_final['Insomnie_Status'] == 'Normal').sum()
+            
+            total_samples = len(df_final)
+            
+            # Afficher un résumé
+            print("\n===== RÉSUMÉ DE L'ANALYSE =====")
+            print(f"Nombre total d'échantillons: {total_samples}")
+            
+            print("\nRésultats Apnée:")
+            print(f"- Apnée détectée: {apnee_count} échantillons ({apnee_count/total_samples*100:.1f}%)")
+            print(f"- Normal: {normal_apnee_count} échantillons ({normal_apnee_count/total_samples*100:.1f}%)")
+            
+            print("\nRésultats Insomnie:")
+            print(f"- Insomnie sévère: {severe_insomnia} échantillons ({severe_insomnia/total_samples*100:.1f}%)")
+            print(f"- Insomnie modérée: {moderate_insomnia} échantillons ({moderate_insomnia/total_samples*100:.1f}%)")
+            print(f"- Insomnie légère: {mild_insomnia} échantillons ({mild_insomnia/total_samples*100:.1f}%)")
+            print(f"- Normal: {normal_insomnia} échantillons ({normal_insomnia/total_samples*100:.1f}%)")
+            
+            # Sauvegarder les résultats
+            print(f"\nSauvegarde des résultats dans {output_file}")
+            df_final.to_csv(output_file, index=False)
+            print(f"Sauvegarde terminée avec succès!")
+            
+            return df_final
+            
+        except Exception as e:
+            print(f"ERREUR: {str(e)}")
+            return None
+
+Module: main.py
+=============
+
+Ce module est le point d'entrée principal de l'application.
+
+.. code-block:: python
+
+    import os
+    import pandas as pd
+    from analysis_utils import analyze_and_save_results
+
+    def main():
+        
+        try:
+            # Vérifier si dfapne existe dans l'environnement actuel
+            try:
+                print("Utilisation du DataFrame 'dfapne' existant")
+                results = analyze_and_save_results(input_dataframe=df)
+            except NameError:
+                # Si dfapne n'existe pas, demander à l'utilisateur de fournir un fichier
+                print("Le DataFrame 'df' n'a pas été trouvé")
+                
+                # Demander à l'utilisateur le chemin du fichier
+                input_file = input("Entrez le chemin vers votre fichier CSV (avec les colonnes EEG et EMG): ")
+                output_file = input("Entrez le chemin pour la sauvegarde des résultats (ou laissez vide pour 'resultats_analyse_sommeil.csv'): ")
+                
+                if not output_file:
+                    output_file = "resultats_analyse_sommeil.csv"
+                    
+                if os.path.exists(input_file):
+                    results = analyze_and_save_results(input_file=input_file, output_file=output_file)
+                else:
+                    print(f"ERREUR: Le fichier {input_file} n'existe pas")
+                    
+        except Exception as e:
+            print(f"ERREUR CRITIQUE: {str(e)}")
+
+    if __name__ == "__main__":
+        main()
+
+Installation et Utilisation
+=========================
+
+1. Installation des dépendances
+------------------------------
+
+.. code-block:: bash
+
+    pip install numpy pandas scipy matplotlib
+
+2. Structure des fichiers
+-----------------------
+
+Organisez vos fichiers comme suit:
+
+.. code-block:: text
+
+    sleep_analysis/
+    ├── signal_processing.py
+    ├── apnea_detection.py
+    ├── insomnia_detection.py
+    ├── analysis_utils.py
+    └── main.py
+
+3. Lancement de l'analyse
+------------------------
+
+Pour analyser des données de sommeil:
+
+.. code-block:: bash
+
+    python main.py
+
+L'application vous demandera de spécifier le chemin vers votre fichier CSV contenant les données EEG et EMG.
+
+4. Format d'entrée attendu
+-------------------------
+
+Le fichier CSV d'entrée doit contenir au moins deux colonnes:
+- 'EEG': Signal électroencéphalographique
+- 'EMG': Signal électromyographique
+
+Exemple:
+
+.. code-block:: text
+
+    EEG,EMG
+    120.3,30.2
+    125.7,31.5
+    ...
+
+5. Interprétation des résultats
+-----------------------------
+
+Le fichier de sortie contiendra les colonnes suivantes:
+- Colonnes originales (EEG, EMG)
+- Apnee_Status: 'Apnée' ou 'No Apnée'
+- Alpha_Power: Puissance relative des ondes alpha
+- EMG_RMS: Amplitude moyenne de l'EMG
+- EMG_Variance: Variation du signal EMG
+- Insomnie_Status: 'Insomnie sévère', 'Insomnie modérée', 'Insomnie légère' ou 'Normal'
+- Insomnie_Score: Score numérique (0-4) d'insomnie
+- Beta_Power: Puissance relative des ondes bêta
+- Beta_Delta_Ratio: Ratio entre ondes bêta et delta
+- EMG_Tension: Niveau de tension musculaire
+- Micro_Arousals: Micro-éveils par minute
+
+Fondements scientifiques
+======================
+
+La détection d'apnée du sommeil s'appuie sur plusieurs marqueurs physiologiques:
+- Augmentation de l'activité des ondes alpha (8-13 Hz) pendant les épisodes d'apnée
+- Diminution du tonus musculaire (EMG)
+- Fluctuations soudaines du signal EMG indiquant des micro-éveils
+
+Pour l'insomnie, les marqueurs clés incluent:
+- Augmentation de l'activité des ondes bêta (15-30 Hz)
+- Ratio élevé entre les ondes bêta et delta
+- Tonus musculaire (EMG) élevé
+- Fréquence accrue de micro-éveils
+
+Limitations
+==========
+
+- L'analyse automatisée ne remplace pas un diagnostic clinique par un médecin.
+- Les seuils utilisés sont basés sur la littérature mais pourraient nécessiter un ajustement pour des populations spécifiques.
+- La qualité des signaux d'entrée affecte significativement la précision des résultats.
+- L'absence d'autres signaux polysomnographiques (ECG, flux respiratoire, etc.) peut limiter la précision de la détection d'apnée.
+
+Références
+=========
+
+1. Berry, R. B., et al. (2012). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications. Version 2.0. Darien, IL: American Academy of Sleep Medicine.
+2. Iber, C., et al. (2007). The AASM manual for the scoring of sleep and associated events: Rules, terminology and technical specifications. Westchester, IL: American Academy of Sleep Medicine.
+3. Morin, C. M., & Benca, R. (2012). Chronic insomnia. The Lancet, 379(9821), 1129-1141.
+
 
 Conseils d'optimisation
 ======================
