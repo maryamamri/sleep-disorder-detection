@@ -161,6 +161,8 @@ Cette section du notebook nettoie et prépare les données pour l'analyse.
 *Code à exécuter* :
 
 .. code-block:: python
+
+
     import statsmodels.api as sm
     import pandas as pd
     from sklearn.preprocessing import MinMaxScaler
