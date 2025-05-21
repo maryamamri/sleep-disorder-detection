@@ -6,3 +6,4 @@ seaborn
 tensorflow
 mne
 sphinx
+furo
