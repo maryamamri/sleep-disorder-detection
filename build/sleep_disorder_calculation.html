@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG &mdash; Sleep Disorder Predictor 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fcd567ed" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Application Streamlit" href="sleep_app.html" />
+    <link rel="prev" title="Modèle de Prédiction EMG/EEG Hybride" href="model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sleep Disorder Predictor
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_preparation.html">Préparation des Données</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#types-de-signaux-supportes">Types de Signaux Supportés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#formats-de-donnees-acceptes">Formats de Données Acceptés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#etapes-de-preprocessing">Étapes de Préprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modèle de Prédiction EMG/EEG Hybride</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#architecture-du-modele">Architecture du Modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#structure-du-code">Structure du Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#usage-et-implementation">Usage et Implémentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#avantages-de-l-architecture">Avantages de l’Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#optimisations-integrees">Optimisations Intégrées</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#methodologie-de-detection">Méthodologie de Détection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analyse-par-fenetres-temporelles">Analyse par Fenêtres Temporelles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pipeline-complet-d-analyse">Pipeline Complet d’Analyse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interpretation-clinique">Interprétation Clinique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualisation-des-resultats">Visualisation des Résultats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_app.html">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#application-sleep-app-pour-prediction-des-troubles-de-sommeil">Application sleep_app pour prediction des troubles de Sommeil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#fonctionnalites">Fonctionnalités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#installation-et-utilisation">Installation et utilisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#prerequis">Prérequis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#installation-de-l-application">Installation de l’application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#lancement">Lancement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#captures-d-ecran">Captures d’écran</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#utilisation">Utilisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#problemes-courants">Problèmes courants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NLP.html">Guide Complet d’Analyse de Journal de Sommeil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#installation-et-imports">Installation et Imports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dependances-requises">Dépendances Requises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#imports-et-configuration">Imports et Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#telechargement-des-ressources-nltk">Téléchargement des Ressources NLTK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classe-sleepdiaryanalyzer">Classe SleepDiaryAnalyzer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#initialisation-de-la-classe">Initialisation de la Classe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dictionnaires-de-mots-cles">Dictionnaires de Mots-Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#patterns-d-expression-reguliere">Patterns d’Expression Régulière</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#methodes-de-preprocessing">Méthodes de Préprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#preprocessing-du-texte">Préprocessing du Texte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#extraction-d-entites-temporelles">Extraction d’Entités Temporelles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-de-sentiment">Analyse de Sentiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-de-sentiment">Méthode d’Analyse de Sentiment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#extraction-de-mots-cles">Extraction de Mots-Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#comptage-des-mots-cles-de-sommeil">Comptage des Mots-Clés de Sommeil</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classification-de-la-qualite-du-sommeil">Classification de la Qualité du Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#algorithme-de-classification">Algorithme de Classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#detection-de-problemes-de-sommeil">Détection de Problèmes de Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#identification-des-troubles">Identification des Troubles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-complete-d-une-entree">Analyse Complète d’une Entrée</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-integree">Méthode d’Analyse Intégrée</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-d-un-journal-complet">Analyse d’un Journal Complet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#traitement-de-multiple-entrees">Traitement de Multiple Entrées</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#generation-d-insights">Génération d’Insights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#calcul-des-metriques-globales">Calcul des Métriques Globales</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#visualisations">Visualisations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#creation-des-graphiques">Création des Graphiques</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#fonctions-utilitaires">Fonctions Utilitaires</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#donnees-d-exemple">Données d’Exemple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#fonction-d-analyse-complete">Fonction d’Analyse Complète</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#execution-du-programme-principal">Exécution du Programme Principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#script-principal">Script Principal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#reproduction-des-resultats">Reproduction des Résultats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#personnalisation">Personnalisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#adaptation-a-vos-donnees">Adaptation à Vos Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sleep Disorder Predictor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sleep_disorder_calculation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="calcul-et-interpretation-des-troubles-du-sommeil-a-partir-des-signaux-eeg-emg">
+<h1>Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG<a class="headerlink" href="#calcul-et-interpretation-des-troubles-du-sommeil-a-partir-des-signaux-eeg-emg" title="Link to this heading"></a></h1>
+<p>Ce document décrit les algorithmes de détection des troubles du sommeil basés sur l’analyse des signaux EEG et EMG.</p>
+<section id="methodologie-de-detection">
+<h2>Méthodologie de Détection<a class="headerlink" href="#methodologie-de-detection" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Filtrage des Signaux</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bandpass_filter</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">lowcut</span><span class="p">,</span> <span class="n">highcut</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filtre passe-bande pour le prétraitement des signaux&quot;&quot;&quot;</span>
+    <span class="n">nyquist</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fs</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">lowcut</span> <span class="o">/</span> <span class="n">nyquist</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">highcut</span> <span class="o">/</span> <span class="n">nyquist</span>
+
+    <span class="c1"># Contrôle des plages de fréquence</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">))</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">))</span>
+
+    <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">],</span> <span class="n">btype</span><span class="o">=</span><span class="s1">&#39;band&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Explications</strong>:
+- Utilise un filtre Butterworth d’ordre 4 pour éliminer les artefacts hors bande
+- <cite>filtfilt</cite> applique un filtrage sans déphasage (forward-backward filtering)
+- Contrôle rigoureux des fréquences coupures pour éviter des valeurs invalides
+- Plage typique : 0.5-45Hz pour EEG (conserve les ondes delta à gamma)
+- Plage typique : 10-100Hz pour EMG (capture l’activité musculaire caractéristique)</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Détection de l’Apnée du Sommeil</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">detect_apnea</span><span class="p">(</span><span class="n">eeg</span><span class="p">,</span> <span class="n">emg</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Détection basée sur la puissance alpha EEG et l&#39;activité EMG&quot;&quot;&quot;</span>
+    <span class="c1"># Filtrage des signaux</span>
+    <span class="n">eeg_filtered</span> <span class="o">=</span> <span class="n">bandpass_filter</span><span class="p">(</span><span class="n">eeg</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="n">emg_filtered</span> <span class="o">=</span> <span class="n">bandpass_filter</span><span class="p">(</span><span class="n">emg</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+    <span class="c1"># Analyse spectrale EEG</span>
+    <span class="n">f_eeg</span><span class="p">,</span> <span class="n">pxx_eeg</span> <span class="o">=</span> <span class="n">welch</span><span class="p">(</span><span class="n">eeg_filtered</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">fs</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">alpha_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">f_eeg</span> <span class="o">&gt;=</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_eeg</span> <span class="o">&lt;=</span> <span class="mi">13</span><span class="p">))</span>
+    <span class="n">alpha_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pxx_eeg</span><span class="p">[</span><span class="n">alpha_indices</span><span class="p">])</span>
+
+    <span class="c1"># Analyse EMG</span>
+    <span class="n">emg_rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">emg_filtered</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">emg_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">emg_filtered</span><span class="p">)</span>
+
+    <span class="c1"># Critères de décision</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">alpha_power</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="ow">and</span>
+        <span class="n">emg_rms</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">emg_filtered</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="ow">and</span>
+        <span class="n">emg_variance</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Apnée&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;No Apnée&quot;</span>
+</pre></div>
+</div>
+<p><strong>Explications</strong>:
+- <strong>Critère EEG</strong> : Puissance alpha (8-13Hz) &gt;30% indique un micro-éveil post-apnée
+- <strong>Critère EMG</strong> :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>RMS faible (activité musculaire atonique)</p></li>
+<li><p>Variance élevée (mouvements résiduels)</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>Seuils empiriques</strong> : Basés sur des études polysomnographiques standards</p></li>
+<li><p><strong>Fenêtre d’analyse</strong> : 2 secondes (fs*2 échantillons) pour la résolution fréquentielle</p></li>
+<li><p><strong>Spécificité</strong> : La combinaison alpha+EMG différencie l’apnée des autres événements</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p><strong>Détection de l’Insomnie</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">detect_insomnia</span><span class="p">(</span><span class="n">eeg</span><span class="p">,</span> <span class="n">emg</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Détection basée sur les ratios spectraux EEG et l&#39;activité EMG&quot;&quot;&quot;</span>
+    <span class="c1"># Analyse spectrale</span>
+    <span class="n">f_eeg</span><span class="p">,</span> <span class="n">pxx_eeg</span> <span class="o">=</span> <span class="n">welch</span><span class="p">(</span><span class="n">eeg_filtered</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">fs</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Calcul des puissances par bande</span>
+    <span class="n">delta_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pxx_eeg</span><span class="p">[(</span><span class="n">f_eeg</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_eeg</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">)])</span>
+    <span class="n">beta_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pxx_eeg</span><span class="p">[(</span><span class="n">f_eeg</span> <span class="o">&gt;=</span> <span class="mi">15</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_eeg</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">)])</span>
+
+    <span class="c1"># Calcul des ratios</span>
+    <span class="n">beta_delta_ratio</span> <span class="o">=</span> <span class="n">beta_power</span> <span class="o">/</span> <span class="n">delta_power</span> <span class="k">if</span> <span class="n">delta_power</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">999</span>
+
+    <span class="c1"># Analyse EMG</span>
+    <span class="n">emg_rms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">emg_filtered</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">emg_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">emg_filtered</span><span class="p">)</span>
+    <span class="n">micro_arousal_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">emg_diff</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">emg_diff</span><span class="p">)))</span>
+
+    <span class="c1"># Score d&#39;insomnie</span>
+    <span class="n">insomnia_score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">beta_power</span><span class="o">/</span><span class="n">total_power</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.25</span><span class="p">:</span> <span class="n">insomnia_score</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">beta_delta_ratio</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">:</span> <span class="n">insomnia_score</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">emg_rms</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">emg_filtered</span><span class="p">,</span> <span class="mi">60</span><span class="p">):</span> <span class="n">insomnia_score</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">micro_arousal_count</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span> <span class="n">insomnia_score</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Classification</span>
+    <span class="k">if</span> <span class="n">insomnia_score</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;Insomnie sévère&quot;</span>
+    <span class="k">elif</span> <span class="n">insomnia_score</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;Insomnie modérée&quot;</span>
+    <span class="k">elif</span> <span class="n">insomnia_score</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;Insomnie légère&quot;</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;Normal&quot;</span>
+</pre></div>
+</div>
+<p><strong>Explications</strong>:
+- <strong>Biomarqueurs EEG</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Ratio Beta/Delta élevé → hyperactivation corticale</p></li>
+<li><p>Puissance beta &gt;25% → activité cognitive persistante</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>Biomarqueurs EMG</strong>:
+- Tension musculaire élevée (percentile 60)
+- Micro-éveils fréquents (&gt;3/min)</p></li>
+<li><p><strong>Score clinique</strong>:
+- 0-1 : Normal
+- 2 : Insomnie modérée (seuil clinique)
+- ≥3 : Insomnie sévère</p></li>
+<li><p><strong>Avantages</strong> : Capture à la fois les aspects physiologiques et moteurs de l’insomnie</p></li>
+</ul>
+</section>
+<section id="analyse-par-fenetres-temporelles">
+<h2>Analyse par Fenêtres Temporelles<a class="headerlink" href="#analyse-par-fenetres-temporelles" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_signal_windows</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Application des détections sur des fenêtres glissantes&quot;&quot;&quot;</span>
+    <span class="n">samples_per_window</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">*</span> <span class="n">window_size</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">samples_per_window</span><span class="p">):</span>
+        <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start_idx</span> <span class="o">+</span> <span class="n">samples_per_window</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+
+        <span class="n">eeg_window</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;EEG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">emg_window</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;EMG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># Apnée (fenêtres de 5s)</span>
+        <span class="k">if</span> <span class="n">window_size</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">detect_apnea</span><span class="p">(</span><span class="n">eeg_window</span><span class="p">,</span> <span class="n">emg_window</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+            <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="s1">&#39;Apnee_Status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="c1"># Insomnie (fenêtres de 30s)</span>
+        <span class="k">elif</span> <span class="n">window_size</span> <span class="o">==</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">detect_insomnia</span><span class="p">(</span><span class="n">eeg_window</span><span class="p">,</span> <span class="n">emg_window</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+            <span class="n">result_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">,</span> <span class="s1">&#39;Insomnie_Status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+<section id="pipeline-complet-d-analyse">
+<h2>Pipeline Complet d’Analyse<a class="headerlink" href="#pipeline-complet-d-analyse" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_and_save_results</span><span class="p">(</span><span class="n">input_dataframe</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pipeline complet d&#39;analyse et sauvegarde&quot;&quot;&quot;</span>
+    <span class="c1"># Analyse apnée (fenêtres de 5s)</span>
+    <span class="n">df_apnee</span> <span class="o">=</span> <span class="n">analyze_signal_windows</span><span class="p">(</span><span class="n">input_dataframe</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># Analyse insomnie (fenêtres de 30s)</span>
+    <span class="n">df_final</span> <span class="o">=</span> <span class="n">analyze_signal_windows</span><span class="p">(</span><span class="n">df_apnee</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+    <span class="c1"># Statistiques</span>
+    <span class="n">apnee_count</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Apnee_Status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Apnée&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">severe_insomnia</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_final</span><span class="p">[</span><span class="s1">&#39;Insomnie_Status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Insomnie sévère&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># Sauvegarde</span>
+    <span class="n">df_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;apnea_events&#39;</span><span class="p">:</span> <span class="n">apnee_count</span><span class="p">,</span>
+        <span class="s1">&#39;severe_insomnia&#39;</span><span class="p">:</span> <span class="n">severe_insomnia</span><span class="p">,</span>
+        <span class="s1">&#39;output_file&#39;</span><span class="p">:</span> <span class="n">output_file</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretation-clinique">
+<h2>Interprétation Clinique<a class="headerlink" href="#interpretation-clinique" title="Link to this heading"></a></h2>
+<p>Les algorithmes implémentent les critères AASM (American Academy of Sleep Medicine) :
+- Apnée : Chute de ≥90% du flux respiratoire pendant ≥10s avec effort respiratoire
+- Insomnie : Latence d’endormissement &gt;30min ou efficacité &lt;85%</p>
+<p>Les critères de détection sont basés sur:</p>
+<ol class="arabic simple">
+<li><p><strong>Apnée du sommeil</strong>:
+- Puissance alpha EEG élevée (&gt;30% de la puissance totale)
+- Activité EMG réduite (en dessous du 25ème percentile)
+- Variance EMG significative (&gt;0.01)</p></li>
+<li><p><strong>Insomnie</strong>:
+- Ratio Beta/Delta &gt; 1.5
+- Puissance Beta &gt; 25% de la puissance totale
+- Tension EMG élevée (au-dessus du 60ème percentile)
+- Micro-éveils fréquents (&gt;3 par minute)</p></li>
+</ol>
+</section>
+<section id="visualisation-des-resultats">
+<h2>Visualisation des Résultats<a class="headerlink" href="#visualisation-des-resultats" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="_images/Troubles.png"><img alt="les metriques d'evaluation" src="_images/Troubles.png" style="width: 500px;" />
+</a>
+<p>Les résultats sont sauvegardés dans un DataFrame avec les colonnes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Apnee_Status</span></code>: “Apnée” ou “No Apnée”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Insomnie_Status</span></code>: Niveau de sévérité</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alpha_Power</span></code>: Puissance alpha normalisée</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Beta_Delta_Ratio</span></code>: Ratio des puissances spectrales</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EMG_RMS</span></code>: Niveau d’activité musculaire</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Micro_Arousals</span></code>: Nombre de micro-éveils détectés</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model.html" class="btn btn-neutral float-left" title="Modèle de Prédiction EMG/EEG Hybride" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sleep_app.html" class="btn btn-neutral float-right" title="Application Streamlit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amri Maryam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
