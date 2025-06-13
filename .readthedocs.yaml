@@ -5,11 +5,6 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.9"
-  jobs:
-    post_create_environment:
-      - pip install --upgrade pip setuptools wheel
-    post_install:
-      - pip install -e .
 
 sphinx:
   configuration: docs/source/conf.py
@@ -24,9 +19,9 @@ python:
   install:
     - requirements: docs/requirements.txt
     - requirements: requirements.txt
-    - method: pip
-      path: .
+    # Supprimé: method: pip / path: . car pas de setup.py
 
-submodules:
-  include: all
-  recursive: true
+# Supprimé: submodules car probablement pas nécessaire
+# submodules:
+#   include: all
+#   recursive: true
