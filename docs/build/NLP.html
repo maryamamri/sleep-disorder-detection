@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Complet d’Analyse de Journal de Sommeil &mdash; Sleep Disorder Predictor 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fcd567ed" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Application Streamlit" href="sleep_app.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sleep Disorder Predictor
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_preparation.html">Préparation des Données</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#types-de-signaux-supportes">Types de Signaux Supportés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#formats-de-donnees-acceptes">Formats de Données Acceptés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#etapes-de-preprocessing">Étapes de Préprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modèle de Prédiction EMG/EEG Hybride</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#architecture-du-modele">Architecture du Modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#structure-du-code">Structure du Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#usage-et-implementation">Usage et Implémentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#avantages-de-l-architecture">Avantages de l’Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#optimisations-integrees">Optimisations Intégrées</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_disorder_calculation.html">Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#methodologie-de-detection">Méthodologie de Détection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#analyse-par-fenetres-temporelles">Analyse par Fenêtres Temporelles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#pipeline-complet-d-analyse">Pipeline Complet d’Analyse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#interpretation-clinique">Interprétation Clinique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#visualisation-des-resultats">Visualisation des Résultats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_app.html">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#application-sleep-app-pour-prediction-des-troubles-de-sommeil">Application sleep_app pour prediction des troubles de Sommeil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#fonctionnalites">Fonctionnalités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#installation-et-utilisation">Installation et utilisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#prerequis">Prérequis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#installation-de-l-application">Installation de l’application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#lancement">Lancement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#captures-d-ecran">Captures d’écran</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#utilisation">Utilisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#problemes-courants">Problèmes courants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide Complet d’Analyse de Journal de Sommeil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-et-imports">Installation et Imports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependances-requises">Dépendances Requises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imports-et-configuration">Imports et Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#telechargement-des-ressources-nltk">Téléchargement des Ressources NLTK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#classe-sleepdiaryanalyzer">Classe SleepDiaryAnalyzer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initialisation-de-la-classe">Initialisation de la Classe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dictionnaires-de-mots-cles">Dictionnaires de Mots-Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#patterns-d-expression-reguliere">Patterns d’Expression Régulière</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#methodes-de-preprocessing">Méthodes de Préprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preprocessing-du-texte">Préprocessing du Texte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extraction-d-entites-temporelles">Extraction d’Entités Temporelles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#analyse-de-sentiment">Analyse de Sentiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#methode-d-analyse-de-sentiment">Méthode d’Analyse de Sentiment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extraction-de-mots-cles">Extraction de Mots-Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#comptage-des-mots-cles-de-sommeil">Comptage des Mots-Clés de Sommeil</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#classification-de-la-qualite-du-sommeil">Classification de la Qualité du Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#algorithme-de-classification">Algorithme de Classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#detection-de-problemes-de-sommeil">Détection de Problèmes de Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#identification-des-troubles">Identification des Troubles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#analyse-complete-d-une-entree">Analyse Complète d’une Entrée</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#methode-d-analyse-integree">Méthode d’Analyse Intégrée</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#analyse-d-un-journal-complet">Analyse d’un Journal Complet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#traitement-de-multiple-entrees">Traitement de Multiple Entrées</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generation-d-insights">Génération d’Insights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#calcul-des-metriques-globales">Calcul des Métriques Globales</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualisations">Visualisations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creation-des-graphiques">Création des Graphiques</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fonctions-utilitaires">Fonctions Utilitaires</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#donnees-d-exemple">Données d’Exemple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fonction-d-analyse-complete">Fonction d’Analyse Complète</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#execution-du-programme-principal">Exécution du Programme Principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#script-principal">Script Principal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reproduction-des-resultats">Reproduction des Résultats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#personnalisation">Personnalisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adaptation-a-vos-donnees">Adaptation à Vos Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sleep Disorder Predictor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide Complet d’Analyse de Journal de Sommeil</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/NLP.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-complet-d-analyse-de-journal-de-sommeil">
+<h1>Guide Complet d’Analyse de Journal de Sommeil<a class="headerlink" href="#guide-complet-d-analyse-de-journal-de-sommeil" title="Link to this heading"></a></h1>
+<p>Ce guide explique en détail chaque étape du code d’analyse de journal de sommeil, permettant de reproduire exactement les mêmes résultats.</p>
+<section id="installation-et-imports">
+<h2>Installation et Imports<a class="headerlink" href="#installation-et-imports" title="Link to this heading"></a></h2>
+<section id="dependances-requises">
+<h3>Dépendances Requises<a class="headerlink" href="#dependances-requises" title="Link to this heading"></a></h3>
+<p>Avant d’exécuter le code, installez toutes les bibliothèques nécessaires :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>numpy<span class="w"> </span>nltk<span class="w"> </span>scikit-learn<span class="w"> </span>matplotlib<span class="w"> </span>seaborn
+</pre></div>
+</div>
+</section>
+<section id="imports-et-configuration">
+<h3>Imports et Configuration<a class="headerlink" href="#imports-et-configuration" title="Link to this heading"></a></h3>
+<p>Le code commence par importer toutes les bibliothèques nécessaires :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">nltk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.sentiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.tokenize</span><span class="w"> </span><span class="kn">import</span> <span class="n">word_tokenize</span><span class="p">,</span> <span class="n">sent_tokenize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nltk.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Explication des imports :</strong>
+- <strong>pandas/numpy</strong> : Manipulation de données et calculs numériques
+- <strong>re</strong> : Expressions régulières pour l’extraction d’entités
+- <strong>nltk</strong> : Traitement du langage naturel et analyse de sentiment
+- <strong>sklearn</strong> : Machine learning (vectorisation, clustering, classification)
+- <strong>matplotlib/seaborn</strong> : Visualisation des données
+- <strong>datetime</strong> : Gestion des dates et heures
+- <strong>warnings</strong> : Suppression des avertissements pour une sortie plus propre</p>
+</section>
+<section id="telechargement-des-ressources-nltk">
+<h3>Téléchargement des Ressources NLTK<a class="headerlink" href="#telechargement-des-ressources-nltk" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p><strong>Ressources téléchargées :</strong>
+- <strong>punkt</strong> : Tokenisation des phrases
+- <strong>stopwords</strong> : Mots vides en français et anglais
+- <strong>vader_lexicon</strong> : Lexique pour l’analyse de sentiment VADER</p>
+</section>
+</section>
+<section id="classe-sleepdiaryanalyzer">
+<h2>Classe SleepDiaryAnalyzer<a class="headerlink" href="#classe-sleepdiaryanalyzer" title="Link to this heading"></a></h2>
+<section id="initialisation-de-la-classe">
+<h3>Initialisation de la Classe<a class="headerlink" href="#initialisation-de-la-classe" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SleepDiaryAnalyzer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sia</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;french&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p><strong>Composants initialisés :</strong>
+- <strong>sia</strong> : Analyseur de sentiment VADER
+- <strong>stop_words</strong> : Mots vides français et anglais combinés
+- <strong>vectorizer</strong> : Vectoriseur TF-IDF limité à 100 caractéristiques
+- <strong>classifier</strong> : Classificateur (initialisé à None)</p>
+</section>
+<section id="dictionnaires-de-mots-cles">
+<h3>Dictionnaires de Mots-Clés<a class="headerlink" href="#dictionnaires-de-mots-cles" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">sleep_keywords</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;fatigue&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;fatigué&#39;</span><span class="p">,</span> <span class="s1">&#39;épuisé&#39;</span><span class="p">,</span> <span class="s1">&#39;crevé&#39;</span><span class="p">,</span> <span class="s1">&#39;tired&#39;</span><span class="p">,</span> <span class="s1">&#39;exhausted&#39;</span><span class="p">,</span> <span class="s1">&#39;fatigué&#39;</span><span class="p">,</span> <span class="s1">&#39;las&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;stress&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;stressé&#39;</span><span class="p">,</span> <span class="s1">&#39;anxieux&#39;</span><span class="p">,</span> <span class="s1">&#39;angoissé&#39;</span><span class="p">,</span> <span class="s1">&#39;stressed&#39;</span><span class="p">,</span> <span class="s1">&#39;worried&#39;</span><span class="p">,</span> <span class="s1">&#39;inquiet&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;qualité_positive&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reposé&#39;</span><span class="p">,</span> <span class="s1">&#39;frais&#39;</span><span class="p">,</span> <span class="s1">&#39;énergique&#39;</span><span class="p">,</span> <span class="s1">&#39;refreshed&#39;</span><span class="p">,</span> <span class="s1">&#39;energetic&#39;</span><span class="p">,</span> <span class="s1">&#39;bien dormi&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;qualité_negative&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mal dormi&#39;</span><span class="p">,</span> <span class="s1">&#39;insomnie&#39;</span><span class="p">,</span> <span class="s1">&#39;réveils&#39;</span><span class="p">,</span> <span class="s1">&#39;cauchemar&#39;</span><span class="p">,</span> <span class="s1">&#39;agité&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;durée&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;heures&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;temps&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;réveils&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;réveillé&#39;</span><span class="p">,</span> <span class="s1">&#39;réveil&#39;</span><span class="p">,</span> <span class="s1">&#39;levé&#39;</span><span class="p">,</span> <span class="s1">&#39;debout&#39;</span><span class="p">,</span> <span class="s1">&#39;wake up&#39;</span><span class="p">,</span> <span class="s1">&#39;woke&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Catégories de mots-clés :</strong>
+- <strong>fatigue</strong> : Indicateurs de fatigue (français/anglais)
+- <strong>stress</strong> : Indicateurs de stress et anxiété
+- <strong>qualité_positive</strong> : Mots indiquant une bonne qualité de sommeil
+- <strong>qualité_negative</strong> : Mots indiquant une mauvaise qualité
+- <strong>durée</strong> : Mots liés à la durée du sommeil
+- <strong>réveils</strong> : Mots liés aux réveils</p>
+</section>
+<section id="patterns-d-expression-reguliere">
+<h3>Patterns d’Expression Régulière<a class="headerlink" href="#patterns-d-expression-reguliere" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">time_patterns</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;heures&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;(\d+)\s*(?:heures?|h)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;minutes&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;(\d+)\s*(?:minutes?|min)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;reveils&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;(\d+)\s*(?:fois|réveils?|wake)&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;heure_coucher&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;(?:couché|dormi|sleep)\s*(?:à|at)\s*(\d{1,2})[h:]?(\d{0,2})&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;heure_lever&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;(?:levé|réveillé|wake)\s*(?:à|at)\s*(\d{1,2})[h:]?(\d{0,2})&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Patterns définis :</strong>
+- <strong>heures</strong> : Capture “8 heures”, “7h”, etc.
+- <strong>minutes</strong> : Capture “30 minutes”, “45 min”, etc.
+- <strong>reveils</strong> : Capture “3 fois”, “2 réveils”, etc.
+- <strong>heure_coucher</strong> : Capture l’heure de coucher
+- <strong>heure_lever</strong> : Capture l’heure de lever</p>
+</section>
+</section>
+<section id="methodes-de-preprocessing">
+<h2>Méthodes de Préprocessing<a class="headerlink" href="#methodes-de-preprocessing" title="Link to this heading"></a></h2>
+<section id="preprocessing-du-texte">
+<h3>Préprocessing du Texte<a class="headerlink" href="#preprocessing-du-texte" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Préprocessing du texte&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^\w\s]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">text</span>
+</pre></div>
+</div>
+<p><strong>Étapes du préprocessing :</strong>
+1. Vérification des valeurs nulles
+2. Conversion en minuscules
+3. Suppression de la ponctuation (garde uniquement mots et espaces)
+4. Normalisation des espaces multiples
+5. Suppression des espaces en début/fin</p>
+</section>
+<section id="extraction-d-entites-temporelles">
+<h3>Extraction d’Entités Temporelles<a class="headerlink" href="#extraction-d-entites-temporelles" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_temporal_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extraction d&#39;entités temporelles&quot;&quot;&quot;</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">text_lower</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># Extraction des heures de sommeil</span>
+    <span class="n">heures_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_patterns</span><span class="p">[</span><span class="s1">&#39;heures&#39;</span><span class="p">],</span> <span class="n">text_lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">heures_match</span><span class="p">:</span>
+        <span class="n">entities</span><span class="p">[</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">heures_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Extraction des minutes</span>
+    <span class="n">minutes_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_patterns</span><span class="p">[</span><span class="s1">&#39;minutes&#39;</span><span class="p">],</span> <span class="n">text_lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">minutes_match</span><span class="p">:</span>
+        <span class="n">entities</span><span class="p">[</span><span class="s1">&#39;minutes_sommeil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">minutes_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Extraction du nombre de réveils</span>
+    <span class="n">reveils_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_patterns</span><span class="p">[</span><span class="s1">&#39;reveils&#39;</span><span class="p">],</span> <span class="n">text_lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reveils_match</span><span class="p">:</span>
+        <span class="n">entities</span><span class="p">[</span><span class="s1">&#39;nb_reveils&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">reveils_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">entities</span>
+</pre></div>
+</div>
+<p><strong>Entités extraites :</strong>
+- <strong>heures_sommeil</strong> : Nombre d’heures de sommeil mentionnées
+- <strong>minutes_sommeil</strong> : Minutes de sommeil supplémentaires
+- <strong>nb_reveils</strong> : Nombre de réveils nocturnes</p>
+</section>
+</section>
+<section id="analyse-de-sentiment">
+<h2>Analyse de Sentiment<a class="headerlink" href="#analyse-de-sentiment" title="Link to this heading"></a></h2>
+<section id="methode-d-analyse-de-sentiment">
+<h3>Méthode d’Analyse de Sentiment<a class="headerlink" href="#methode-d-analyse-de-sentiment" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyse de sentiment&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;compound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;neu&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;neg&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sia</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scores</span>
+</pre></div>
+</div>
+<p><strong>Scores retournés par VADER :</strong>
+- <strong>compound</strong> : Score global (-1 à +1)
+- <strong>pos</strong> : Proportion de sentiment positif (0 à 1)
+- <strong>neu</strong> : Proportion de sentiment neutre (0 à 1)
+- <strong>neg</strong> : Proportion de sentiment négatif (0 à 1)</p>
+</section>
+</section>
+<section id="extraction-de-mots-cles">
+<h2>Extraction de Mots-Clés<a class="headerlink" href="#extraction-de-mots-cles" title="Link to this heading"></a></h2>
+<section id="comptage-des-mots-cles-de-sommeil">
+<h3>Comptage des Mots-Clés de Sommeil<a class="headerlink" href="#comptage-des-mots-cles-de-sommeil" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_sleep_keywords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extraction des mots-clés liés au sommeil&quot;&quot;&quot;</span>
+    <span class="n">text_lower</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">keyword_counts</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">keywords</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sleep_keywords</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">keywords</span> <span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">text_lower</span><span class="p">)</span>
+        <span class="n">keyword_counts</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s1">_keywords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+
+    <span class="k">return</span> <span class="n">keyword_counts</span>
+</pre></div>
+</div>
+<p><strong>Processus :</strong>
+1. Conversion du texte en minuscules
+2. Pour chaque catégorie de mots-clés :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Compter les occurrences de chaque mot-clé</p></li>
+<li><p>Sommer les comptes par catégorie</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Retourner un dictionnaire avec les comptes par catégorie</p></li>
+</ol>
+</section>
+</section>
+<section id="classification-de-la-qualite-du-sommeil">
+<h2>Classification de la Qualité du Sommeil<a class="headerlink" href="#classification-de-la-qualite-du-sommeil" title="Link to this heading"></a></h2>
+<section id="algorithme-de-classification">
+<h3>Algorithme de Classification<a class="headerlink" href="#algorithme-de-classification" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">classify_sleep_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentiment_scores</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">temporal_entities</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classification de la qualité du sommeil&quot;&quot;&quot;</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Score basé sur le sentiment</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">sentiment_scores</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="c1"># Score basé sur les mots-clés</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualité_positive_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">score</span> <span class="o">-=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualité_negative_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">score</span> <span class="o">-=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fatigue_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.3</span>
+    <span class="n">score</span> <span class="o">-=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;stress_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.4</span>
+
+    <span class="c1"># Score basé sur les entités temporelles</span>
+    <span class="k">if</span> <span class="s1">&#39;heures_sommeil&#39;</span> <span class="ow">in</span> <span class="n">temporal_entities</span><span class="p">:</span>
+        <span class="n">heures</span> <span class="o">=</span> <span class="n">temporal_entities</span><span class="p">[</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="mi">7</span> <span class="o">&lt;=</span> <span class="n">heures</span> <span class="o">&lt;=</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="mf">0.5</span>
+        <span class="k">elif</span> <span class="n">heures</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="ow">or</span> <span class="n">heures</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">-=</span> <span class="mf">0.5</span>
+
+    <span class="k">if</span> <span class="s1">&#39;nb_reveils&#39;</span> <span class="ow">in</span> <span class="n">temporal_entities</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">-=</span> <span class="n">temporal_entities</span><span class="p">[</span><span class="s1">&#39;nb_reveils&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.2</span>
+
+    <span class="c1"># Classification</span>
+    <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Bonne qualité&quot;</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Qualité moyenne&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Mauvaise qualité&quot;</span>
+</pre></div>
+</div>
+<p><strong>Système de scoring :</strong>
+1. <strong>Sentiment</strong> : Score compound × 2 (poids élevé)
+2. <strong>Mots-clés positifs</strong> : +0.5 par occurrence
+3. <strong>Mots-clés négatifs</strong> : -0.5 par occurrence
+4. <strong>Fatigue</strong> : -0.3 par occurrence
+5. <strong>Stress</strong> : -0.4 par occurrence
+6. <strong>Heures optimales (7-9h)</strong> : +0.5
+7. <strong>Heures sous-optimales (&lt;6h ou &gt;10h)</strong> : -0.5
+8. <strong>Réveils</strong> : -0.2 par réveil</p>
+<p><strong>Seuils de classification :</strong>
+- Score &gt; 0.5 : “Bonne qualité”
+- Score &gt; -0.5 : “Qualité moyenne”
+- Score ≤ -0.5 : “Mauvaise qualité”</p>
+</section>
+</section>
+<section id="detection-de-problemes-de-sommeil">
+<h2>Détection de Problèmes de Sommeil<a class="headerlink" href="#detection-de-problemes-de-sommeil" title="Link to this heading"></a></h2>
+<section id="identification-des-troubles">
+<h3>Identification des Troubles<a class="headerlink" href="#identification-des-troubles" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">detect_sleep_issues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">sentiment_scores</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">temporal_entities</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Détection de problèmes de sommeil spécifiques&quot;&quot;&quot;</span>
+    <span class="n">issues</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">text_lower</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># Détection d&#39;insomnie</span>
+    <span class="n">insomnia_indicators</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;insomnie&#39;</span><span class="p">,</span> <span class="s1">&#39;pas dormi&#39;</span><span class="p">,</span> <span class="s1">&#39;impossible de dormir&#39;</span><span class="p">,</span> <span class="s1">&#39;réveillé toute la nuit&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">indicator</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">insomnia_indicators</span><span class="p">):</span>
+        <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Suspicion d&#39;insomnie&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Détection de stress/anxiété</span>
+    <span class="k">if</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;stress_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">sentiment_scores</span><span class="p">[</span><span class="s1">&#39;neg&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.6</span><span class="p">:</span>
+        <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Stress/Anxiété détecté&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Détection de sommeil fragmenté</span>
+    <span class="k">if</span> <span class="n">temporal_entities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nb_reveils&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Sommeil fragmenté&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Détection de durée insuffisante</span>
+    <span class="k">if</span> <span class="n">temporal_entities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">issues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Durée de sommeil insuffisante&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">issues</span>
+</pre></div>
+</div>
+<p><strong>Problèmes détectés :</strong>
+1. <strong>Insomnie</strong> : Mots-clés spécifiques d’insomnie
+2. <strong>Stress/Anxiété</strong> : Mots-clés de stress OU sentiment négatif &gt; 0.6
+3. <strong>Sommeil fragmenté</strong> : ≥3 réveils nocturnes
+4. <strong>Durée insuffisante</strong> : &lt;6 heures de sommeil</p>
+</section>
+</section>
+<section id="analyse-complete-d-une-entree">
+<h2>Analyse Complète d’une Entrée<a class="headerlink" href="#analyse-complete-d-une-entree" title="Link to this heading"></a></h2>
+<section id="methode-d-analyse-integree">
+<h3>Méthode d’Analyse Intégrée<a class="headerlink" href="#methode-d-analyse-integree" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_single_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyse complète d&#39;une entrée de journal&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Préprocessing</span>
+    <span class="n">processed_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># Analyses</span>
+    <span class="n">sentiment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_sentiment</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_sleep_keywords</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">temporal_entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_temporal_entities</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">sleep_quality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_sleep_quality</span><span class="p">(</span><span class="n">sentiment</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">temporal_entities</span><span class="p">)</span>
+    <span class="n">sleep_issues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_sleep_issues</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">sentiment</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">temporal_entities</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;texte_original&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+        <span class="s1">&#39;texte_preprocessed&#39;</span><span class="p">:</span> <span class="n">processed_text</span><span class="p">,</span>
+        <span class="s1">&#39;sentiment_compound&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;sentiment_positive&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;sentiment_negative&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;neg&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;sentiment_neutral&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;neu&#39;</span><span class="p">],</span>
+        <span class="o">**</span><span class="n">keywords</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">temporal_entities</span><span class="p">,</span>
+        <span class="s1">&#39;qualite_sommeil&#39;</span><span class="p">:</span> <span class="n">sleep_quality</span><span class="p">,</span>
+        <span class="s1">&#39;problemes_detectes&#39;</span><span class="p">:</span> <span class="n">sleep_issues</span><span class="p">,</span>
+        <span class="s1">&#39;score_global&#39;</span><span class="p">:</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fatigue_keywords&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Processus d’analyse :</strong>
+1. Vérification de la validité du texte
+2. Préprocessing du texte
+3. Analyse de sentiment
+4. Extraction des mots-clés
+5. Extraction des entités temporelles
+6. Classification de la qualité
+7. Détection des problèmes
+8. Calcul du score global</p>
+<p><strong>Données retournées :</strong>
+- Textes original et préprocessé
+- Scores de sentiment (4 métriques)
+- Comptes de mots-clés par catégorie
+- Entités temporelles extraites
+- Qualité du sommeil classifiée
+- Liste des problèmes détectés
+- Score global calculé</p>
+</section>
+</section>
+<section id="analyse-d-un-journal-complet">
+<h2>Analyse d’un Journal Complet<a class="headerlink" href="#analyse-d-un-journal-complet" title="Link to this heading"></a></h2>
+<section id="traitement-de-multiple-entrees">
+<h3>Traitement de Multiple Entrées<a class="headerlink" href="#traitement-de-multiple-entrees" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_sleep_diary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyse d&#39;un journal de sommeil complet&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+        <span class="n">analysis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_single_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">analysis</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Processus :</strong>
+1. Itération sur toutes les entrées
+2. Analyse individuelle de chaque entrée
+3. Collection des résultats non-nuls
+4. Conversion en DataFrame pandas</p>
+</section>
+</section>
+<section id="generation-d-insights">
+<h2>Génération d’Insights<a class="headerlink" href="#generation-d-insights" title="Link to this heading"></a></h2>
+<section id="calcul-des-metriques-globales">
+<h3>Calcul des Métriques Globales<a class="headerlink" href="#calcul-des-metriques-globales" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_insights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_analysis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Génération d&#39;insights à partir des analyses&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="n">insights</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;total_entries&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_analysis</span><span class="p">),</span>
+        <span class="s1">&#39;avg_sentiment&#39;</span><span class="p">:</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;sentiment_compound&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="s1">&#39;quality_distribution&#39;</span><span class="p">:</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;qualite_sommeil&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="s1">&#39;most_common_issues&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;avg_sleep_hours&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;avg_wake_ups&#39;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Problèmes les plus fréquents</span>
+    <span class="n">all_issues</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">issues_list</span> <span class="ow">in</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;problemes_detectes&#39;</span><span class="p">]:</span>
+        <span class="n">all_issues</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">issues_list</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">all_issues</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+        <span class="n">insights</span><span class="p">[</span><span class="s1">&#39;most_common_issues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">all_issues</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+    <span class="c1"># Moyennes des entités temporelles</span>
+    <span class="k">if</span> <span class="s1">&#39;heures_sommeil&#39;</span> <span class="ow">in</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">insights</span><span class="p">[</span><span class="s1">&#39;avg_sleep_hours&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s1">&#39;nb_reveils&#39;</span> <span class="ow">in</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">insights</span><span class="p">[</span><span class="s1">&#39;avg_wake_ups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;nb_reveils&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">insights</span>
+</pre></div>
+</div>
+<p><strong>Insights calculés :</strong>
+1. <strong>total_entries</strong> : Nombre total d’entrées
+2. <strong>avg_sentiment</strong> : Sentiment moyen
+3. <strong>quality_distribution</strong> : Distribution des qualités de sommeil
+4. <strong>most_common_issues</strong> : Top 3 des problèmes les plus fréquents
+5. <strong>avg_sleep_hours</strong> : Durée moyenne de sommeil
+6. <strong>avg_wake_ups</strong> : Nombre moyen de réveils</p>
+</section>
+</section>
+<section id="visualisations">
+<h2>Visualisations<a class="headerlink" href="#visualisations" title="Link to this heading"></a></h2>
+<section id="creation-des-graphiques">
+<h3>Création des Graphiques<a class="headerlink" href="#creation-des-graphiques" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_visualizations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_analysis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Création de visualisations&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Analyse du Journal de Sommeil&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 1. Distribution de la qualité du sommeil</span>
+    <span class="n">quality_counts</span> <span class="o">=</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;qualite_sommeil&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">quality_counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">quality_counts</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution de la Qualité du Sommeil&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 2. Évolution du sentiment dans le temps</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_analysis</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;sentiment_compound&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Évolution du Sentiment&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Entrées&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Score de Sentiment&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+    <span class="c1"># 3. Corrélation sentiment vs mots-clés de fatigue</span>
+    <span class="k">if</span> <span class="s1">&#39;fatigue_keywords&#39;</span> <span class="ow">in</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;fatigue_keywords&#39;</span><span class="p">],</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;sentiment_compound&#39;</span><span class="p">])</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mots-clés de Fatigue&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Score de Sentiment&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Fatigue vs Sentiment&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 4. Distribution des heures de sommeil</span>
+    <span class="k">if</span> <span class="s1">&#39;heures_sommeil&#39;</span> <span class="ow">in</span> <span class="n">df_analysis</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_analysis</span><span class="p">[</span><span class="s1">&#39;heures_sommeil&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Heures de Sommeil&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Fréquence&#39;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution des Heures de Sommeil&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+<p><strong>Graphiques créés :</strong>
+1. <strong>Graphique en secteurs</strong> : Distribution de la qualité du sommeil
+2. <strong>Graphique linéaire</strong> : Évolution du sentiment dans le temps
+3. <strong>Nuage de points</strong> : Corrélation fatigue vs sentiment
+4. <strong>Histogramme</strong> : Distribution des heures de sommeil</p>
+</section>
+</section>
+<section id="fonctions-utilitaires">
+<h2>Fonctions Utilitaires<a class="headerlink" href="#fonctions-utilitaires" title="Link to this heading"></a></h2>
+<section id="donnees-d-exemple">
+<h3>Données d’Exemple<a class="headerlink" href="#donnees-d-exemple" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_sample_data</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Chargement de données d&#39;exemple&quot;&quot;&quot;</span>
+    <span class="n">sample_entries</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;J&#39;ai très mal dormi cette nuit, je me suis réveillé 4 fois et je suis très fatigué ce matin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Excellente nuit de sommeil, j&#39;ai dormi 8 heures d&#39;affilée et je me sens très reposé&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Nuit difficile à cause du stress, j&#39;ai mis du temps à m&#39;endormir et j&#39;ai fait des cauchemars&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Sommeil correct, environ 7 heures mais quelques réveils nocturnes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Je suis épuisé, seulement 5 heures de sommeil à cause du travail&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Très bonne récupération, je me sens énergique et frais ce matin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Insomnie partielle, réveillé à 3h du matin et impossible de me rendormir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Nuit paisible, endormissement rapide et réveil naturel après 8h30 de sommeil&quot;</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">sample_entries</span>
+</pre></div>
+</div>
+<p><strong>Variété des exemples :</strong>
+- Mauvaise qualité avec réveils multiples
+- Excellente qualité avec durée optimale
+- Problèmes liés au stress
+- Qualité moyenne
+- Durée insuffisante
+- Très bonne récupération
+- Insomnie
+- Sommeil optimal</p>
+</section>
+<section id="fonction-d-analyse-complete">
+<h3>Fonction d’Analyse Complète<a class="headerlink" href="#fonction-d-analyse-complete" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_complete_analysis</span><span class="p">(</span><span class="n">entries</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fonction principale pour l&#39;analyse complète&quot;&quot;&quot;</span>
+    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">SleepDiaryAnalyzer</span><span class="p">()</span>
+
+    <span class="c1"># Analyse des entrées</span>
+    <span class="n">df_results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">analyze_sleep_diary</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+
+    <span class="c1"># Génération d&#39;insights</span>
+    <span class="n">insights</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">generate_insights</span><span class="p">(</span><span class="n">df_results</span><span class="p">)</span>
+
+    <span class="c1"># Création des visualisations</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">create_visualizations</span><span class="p">(</span><span class="n">df_results</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_results</span><span class="p">,</span> <span class="n">insights</span><span class="p">,</span> <span class="n">fig</span>
+</pre></div>
+</div>
+<p><strong>Processus complet :</strong>
+1. Initialisation de l’analyseur
+2. Analyse de toutes les entrées du journal
+3. Génération des insights globaux
+4. Création des visualisations
+5. Retour de tous les résultats</p>
+</section>
+</section>
+<section id="execution-du-programme-principal">
+<h2>Exécution du Programme Principal<a class="headerlink" href="#execution-du-programme-principal" title="Link to this heading"></a></h2>
+<section id="script-principal">
+<h3>Script Principal<a class="headerlink" href="#script-principal" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Test avec des données d&#39;exemple</span>
+    <span class="n">sample_data</span> <span class="o">=</span> <span class="n">load_sample_data</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== ANALYSE DU JOURNAL DE SOMMEIL ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Analyse</span>
+    <span class="n">results_df</span><span class="p">,</span> <span class="n">insights_dict</span><span class="p">,</span> <span class="n">visualization</span> <span class="o">=</span> <span class="n">run_complete_analysis</span><span class="p">(</span><span class="n">sample_data</span><span class="p">)</span>
+
+    <span class="c1"># Affichage des résultats</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Résultats de l&#39;analyse:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Nombre d&#39;entrées analysées: </span><span class="si">{</span><span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;total_entries&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Sentiment moyen: </span><span class="si">{</span><span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;avg_sentiment&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Distribution de qualité: </span><span class="si">{</span><span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;quality_distribution&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;most_common_issues&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Problèmes les plus fréquents: </span><span class="si">{</span><span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;most_common_issues&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;avg_sleep_hours&#39;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- Durée moyenne de sommeil: </span><span class="si">{</span><span class="n">insights_dict</span><span class="p">[</span><span class="s1">&#39;avg_sleep_hours&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Sauvegarde des résultats</span>
+    <span class="n">results_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;sleep_analysis_results.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">visualization</span><span class="p">:</span>
+        <span class="n">visualization</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;sleep_analysis_visualization.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Analyse terminée! Fichiers sauvegardés.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Étapes d’exécution :</strong>
+1. Chargement des données d’exemple
+2. Affichage du titre
+3. Exécution de l’analyse complète
+4. Affichage des résultats principaux
+5. Sauvegarde des résultats en CSV
+6. Sauvegarde de la visualisation en PNG
+7. Message de confirmation</p>
+</section>
+</section>
+<section id="reproduction-des-resultats">
+<h2>Reproduction des Résultats<a class="headerlink" href="#reproduction-des-resultats" title="Link to this heading"></a></h2>
+<p>Pour obtenir exactement les mêmes résultats :</p>
+<ol class="arabic">
+<li><p><strong>Installation des dépendances</strong> :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>numpy<span class="w"> </span>nltk<span class="w"> </span>scikit-learn<span class="w"> </span>matplotlib<span class="w"> </span>seaborn
+</pre></div>
+</div>
+</li>
+<li><p><strong>Exécution du code complet</strong> :</p>
+<ul class="simple">
+<li><p>Copiez tout le code dans un fichier Python (ex: <cite>sleep_analyzer.py</cite>)</p></li>
+<li><p>Exécutez : <cite>python sleep_analyzer.py</cite></p></li>
+</ul>
+</li>
+<li><p><strong>Fichiers générés</strong> :</p>
+<ul class="simple">
+<li><p><cite>sleep_analysis_results.csv</cite> : Résultats détaillés de l’analyse</p></li>
+<li><p><cite>sleep_analysis_visualization.png</cite> : Graphiques de visualisation</p></li>
+</ul>
+</li>
+<li><p><strong>Résultats attendus</strong> :</p>
+<ul class="simple">
+<li><p>8 entrées analysées</p></li>
+<li><p>Sentiment moyen calculé</p></li>
+<li><p>Distribution de qualité (Bonne/Moyenne/Mauvaise)</p></li>
+<li><p>Problèmes les plus fréquents identifiés</p></li>
+<li><p>Durée moyenne de sommeil calculée</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="personnalisation">
+<h2>Personnalisation<a class="headerlink" href="#personnalisation" title="Link to this heading"></a></h2>
+<section id="adaptation-a-vos-donnees">
+<h3>Adaptation à Vos Données<a class="headerlink" href="#adaptation-a-vos-donnees" title="Link to this heading"></a></h3>
+<p>Pour analyser vos propres données de journal de sommeil :</p>
+<ol class="arabic">
+<li><p><strong>Remplacez les données d’exemple</strong> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mes_entrees</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Votre première entrée de journal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Votre deuxième entrée de journal&quot;</span><span class="p">,</span>
+    <span class="c1"># ... plus d&#39;entrées</span>
+<span class="p">]</span>
+
+<span class="n">results_df</span><span class="p">,</span> <span class="n">insights_dict</span><span class="p">,</span> <span class="n">visualization</span> <span class="o">=</span> <span class="n">run_complete_analysis</span><span class="p">(</span><span class="n">mes_entrees</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Ajoutez des mots-clés personnalisés</strong> :</p>
+<p>Modifiez le dictionnaire <cite>sleep_keywords</cite> pour inclure vos propres termes.</p>
+</li>
+<li><p><strong>Personnalisez les seuils de classification</strong> :</p>
+<p>Ajustez les coefficients dans <cite>classify_sleep_quality()</cite> selon vos besoins.</p>
+</li>
+<li><p><strong>Ajoutez de nouvelles métriques</strong> :</p>
+<p>Étendez <cite>generate_insights()</cite> avec vos propres calculs.</p>
+</li>
+</ol>
+<p>Cette documentation complète vous permet de comprendre et reproduire exactement tous les aspects de l’analyse de journal de sommeil.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sleep_app.html" class="btn btn-neutral float-left" title="Application Streamlit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amri Maryam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

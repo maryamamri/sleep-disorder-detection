@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Streamlit &mdash; Sleep Disorder Predictor 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fcd567ed" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Guide Complet d’Analyse de Journal de Sommeil" href="NLP.html" />
+    <link rel="prev" title="Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG" href="sleep_disorder_calculation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sleep Disorder Predictor
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_preparation.html">Préparation des Données</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#types-de-signaux-supportes">Types de Signaux Supportés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#formats-de-donnees-acceptes">Formats de Données Acceptés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#etapes-de-preprocessing">Étapes de Préprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modèle de Prédiction EMG/EEG Hybride</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#architecture-du-modele">Architecture du Modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#structure-du-code">Structure du Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#usage-et-implementation">Usage et Implémentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#avantages-de-l-architecture">Avantages de l’Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#optimisations-integrees">Optimisations Intégrées</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_disorder_calculation.html">Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#methodologie-de-detection">Méthodologie de Détection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#analyse-par-fenetres-temporelles">Analyse par Fenêtres Temporelles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#pipeline-complet-d-analyse">Pipeline Complet d’Analyse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#interpretation-clinique">Interprétation Clinique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#visualisation-des-resultats">Visualisation des Résultats</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#application-sleep-app-pour-prediction-des-troubles-de-sommeil">Application sleep_app pour prediction des troubles de Sommeil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fonctionnalites">Fonctionnalités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-et-utilisation">Installation et utilisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequis">Prérequis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-de-l-application">Installation de l’application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lancement">Lancement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#captures-d-ecran">Captures d’écran</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilisation">Utilisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#problemes-courants">Problèmes courants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NLP.html">Guide Complet d’Analyse de Journal de Sommeil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#installation-et-imports">Installation et Imports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dependances-requises">Dépendances Requises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#imports-et-configuration">Imports et Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#telechargement-des-ressources-nltk">Téléchargement des Ressources NLTK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classe-sleepdiaryanalyzer">Classe SleepDiaryAnalyzer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#initialisation-de-la-classe">Initialisation de la Classe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dictionnaires-de-mots-cles">Dictionnaires de Mots-Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#patterns-d-expression-reguliere">Patterns d’Expression Régulière</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#methodes-de-preprocessing">Méthodes de Préprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#preprocessing-du-texte">Préprocessing du Texte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#extraction-d-entites-temporelles">Extraction d’Entités Temporelles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-de-sentiment">Analyse de Sentiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-de-sentiment">Méthode d’Analyse de Sentiment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#extraction-de-mots-cles">Extraction de Mots-Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#comptage-des-mots-cles-de-sommeil">Comptage des Mots-Clés de Sommeil</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classification-de-la-qualite-du-sommeil">Classification de la Qualité du Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#algorithme-de-classification">Algorithme de Classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#detection-de-problemes-de-sommeil">Détection de Problèmes de Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#identification-des-troubles">Identification des Troubles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-complete-d-une-entree">Analyse Complète d’une Entrée</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-integree">Méthode d’Analyse Intégrée</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-d-un-journal-complet">Analyse d’un Journal Complet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#traitement-de-multiple-entrees">Traitement de Multiple Entrées</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#generation-d-insights">Génération d’Insights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#calcul-des-metriques-globales">Calcul des Métriques Globales</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#visualisations">Visualisations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#creation-des-graphiques">Création des Graphiques</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#fonctions-utilitaires">Fonctions Utilitaires</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#donnees-d-exemple">Données d’Exemple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#fonction-d-analyse-complete">Fonction d’Analyse Complète</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#execution-du-programme-principal">Exécution du Programme Principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#script-principal">Script Principal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#reproduction-des-resultats">Reproduction des Résultats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#personnalisation">Personnalisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#adaptation-a-vos-donnees">Adaptation à Vos Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sleep Disorder Predictor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Application Streamlit</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sleep_app.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="application-streamlit">
+<h1>Application Streamlit<a class="headerlink" href="#application-streamlit" title="Link to this heading"></a></h1>
+<section id="application-sleep-app-pour-prediction-des-troubles-de-sommeil">
+<h2>Application sleep_app pour prediction des troubles de Sommeil<a class="headerlink" href="#application-sleep-app-pour-prediction-des-troubles-de-sommeil" title="Link to this heading"></a></h2>
+<p>Brève description de votre application Streamlit, son objectif et ses fonctionnalités principales.</p>
+</section>
+<section id="fonctionnalites">
+<h2>Fonctionnalités<a class="headerlink" href="#fonctionnalites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>📁 Import de fichiers EDF</strong> : Chargez vos enregistrements de sommeil</p></li>
+<li><p><strong>📊 Visualisation interactive</strong> : Explorez vos signaux EEG/EMG avec Matplotlib</p></li>
+<li><p><strong>🌊 Analyse spectrale</strong> : Analysez les bandes de fréquences cérébrales (Delta, Theta, Alpha, Beta, Gamma)</p></li>
+<li><p><strong>📈 Statistiques détaillées</strong> :  Moyennes, écarts-types, RMS par canal</p></li>
+<li><p><strong>🔮 Prédiction de signaux</strong> : Utilisez l’IA pour prédire les signaux futurs</p></li>
+<li><p><strong>📥 Export des résultats</strong> : Téléchargez vos analyses et rapports</p></li>
+<li><p><strong>Prediction Des troubles</strong> :  Predire les troubles de sommeil a partir des predictions de EEG/EMG</p></li>
+</ul>
+</section>
+<section id="installation-et-utilisation">
+<h2>Installation et utilisation<a class="headerlink" href="#installation-et-utilisation" title="Link to this heading"></a></h2>
+<section id="prerequis">
+<h3>Prérequis<a class="headerlink" href="#prerequis" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>streamlit
+pip<span class="w"> </span>install<span class="w"> </span>pandas
+pip<span class="w"> </span>install<span class="w"> </span>numpy
+pip<span class="w"> </span>install<span class="w"> </span>tensorflow
+pip<span class="w"> </span>install<span class="w"> </span>matplotlib
+pip<span class="w"> </span>install<span class="w"> </span>seaborn
+</pre></div>
+</div>
+</section>
+<section id="installation-de-l-application">
+<h3>Installation de l’application<a class="headerlink" href="#installation-de-l-application" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Télécharger les fichiers depuis : <a class="reference external" href="https://github.com/votre-repo/releases">Lien vers releases</a></p></li>
+<li><p>Extraire l’archive</p></li>
+<li><p>lancer l’app</p></li>
+</ol>
+</section>
+<section id="lancement">
+<h3>Lancement<a class="headerlink" href="#lancement" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>streamlit<span class="w"> </span>run<span class="w"> </span>sleep_app.py
+</pre></div>
+</div>
+<p>L’application sera accessible à l’adresse : <a class="reference external" href="http://localhost:8501">http://localhost:8501</a></p>
+</section>
+</section>
+<section id="captures-d-ecran">
+<h2>Captures d’écran<a class="headerlink" href="#captures-d-ecran" title="Link to this heading"></a></h2>
+<p>C’est l’overview de l’application</p>
+<a class="reference internal image-reference" href="_images/interface.png"><img alt="Interface principale" src="_images/interface.png" style="width: 600px;" />
+</a>
+<p>Resultat des troubles de sommeil</p>
+<a class="reference internal image-reference" href="_images/resultat.png"><img alt="Résultats de l'analyse" src="_images/resultat.png" style="width: 600px;" />
+</a>
+<p>Resultat De NLP Analyseur de sommeil</p>
+<a class="reference internal image-reference" href="_images/res1.png"><img alt="Résultats de l'analyse" src="_images/res1.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="_images/res2.png"><img alt="Résultats de l'analyse" src="_images/res2.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="_images/res3.png"><img alt="Résultats de l'analyse" src="_images/res3.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="_images/res4.png"><img alt="Résultats de l'analyse" src="_images/res4.png" style="width: 600px;" />
+</a>
+</section>
+<section id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Étape 1</strong> : Importer un fichier .edf qui contient les signaux biomédicaux</p></li>
+<li><p><strong>Étape 2</strong> : Lancer la prédiction avec le modèle personnalisé</p></li>
+<li><p><strong>Étape 3</strong> : Cliquer sur “Analyser les troubles du sommeil” pour afficher les troubles futurs</p></li>
+</ol>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Link to this heading"></a></h2>
+<section id="problemes-courants">
+<h3>Problèmes courants<a class="headerlink" href="#problemes-courants" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Erreur de port</strong> : Vérifier que le port 8501 est libre</p></li>
+<li><p><strong>Dépendances manquantes</strong> : Installer les packages requis</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sleep_disorder_calculation.html" class="btn btn-neutral float-left" title="Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="NLP.html" class="btn btn-neutral float-right" title="Guide Complet d’Analyse de Journal de Sommeil" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amri Maryam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+/* Bannière personnalisée */
+.wy-nav-content {
+    padding: 1.618em 3.236em;
+    max-width: 1200px;
+}
+
+/* Style pour les blocs de code */
+.rst-content code {
+    background: #f3f6f6;
+    color: #404040;
+    border: 1px solid #d1d4d4;
+}
+
+/* En-tête */
+.wy-side-nav-search {
+    background-color: #2980B9;
+}

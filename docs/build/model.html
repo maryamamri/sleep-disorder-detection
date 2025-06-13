@@ -1,0 +1,629 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modèle de Prédiction EMG/EEG Hybride &mdash; Sleep Disorder Predictor 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fcd567ed" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG" href="sleep_disorder_calculation.html" />
+    <link rel="prev" title="Préparation des Données" href="data_preparation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sleep Disorder Predictor
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_preparation.html">Préparation des Données</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#types-de-signaux-supportes">Types de Signaux Supportés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#formats-de-donnees-acceptes">Formats de Données Acceptés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html#etapes-de-preprocessing">Étapes de Préprocessing</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modèle de Prédiction EMG/EEG Hybride</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture-du-modele">Architecture du Modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure-du-code">Structure du Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-et-implementation">Usage et Implémentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#avantages-de-l-architecture">Avantages de l’Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimisations-integrees">Optimisations Intégrées</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_disorder_calculation.html">Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#methodologie-de-detection">Méthodologie de Détection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#analyse-par-fenetres-temporelles">Analyse par Fenêtres Temporelles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#pipeline-complet-d-analyse">Pipeline Complet d’Analyse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#interpretation-clinique">Interprétation Clinique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_disorder_calculation.html#visualisation-des-resultats">Visualisation des Résultats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sleep_app.html">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#application-sleep-app-pour-prediction-des-troubles-de-sommeil">Application sleep_app pour prediction des troubles de Sommeil</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#fonctionnalites">Fonctionnalités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#installation-et-utilisation">Installation et utilisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#prerequis">Prérequis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#installation-de-l-application">Installation de l’application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#lancement">Lancement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#captures-d-ecran">Captures d’écran</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#utilisation">Utilisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sleep_app.html#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sleep_app.html#problemes-courants">Problèmes courants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NLP.html">Guide Complet d’Analyse de Journal de Sommeil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#installation-et-imports">Installation et Imports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dependances-requises">Dépendances Requises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#imports-et-configuration">Imports et Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#telechargement-des-ressources-nltk">Téléchargement des Ressources NLTK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classe-sleepdiaryanalyzer">Classe SleepDiaryAnalyzer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#initialisation-de-la-classe">Initialisation de la Classe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#dictionnaires-de-mots-cles">Dictionnaires de Mots-Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#patterns-d-expression-reguliere">Patterns d’Expression Régulière</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#methodes-de-preprocessing">Méthodes de Préprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#preprocessing-du-texte">Préprocessing du Texte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#extraction-d-entites-temporelles">Extraction d’Entités Temporelles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-de-sentiment">Analyse de Sentiment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-de-sentiment">Méthode d’Analyse de Sentiment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#extraction-de-mots-cles">Extraction de Mots-Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#comptage-des-mots-cles-de-sommeil">Comptage des Mots-Clés de Sommeil</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#classification-de-la-qualite-du-sommeil">Classification de la Qualité du Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#algorithme-de-classification">Algorithme de Classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#detection-de-problemes-de-sommeil">Détection de Problèmes de Sommeil</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#identification-des-troubles">Identification des Troubles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-complete-d-une-entree">Analyse Complète d’une Entrée</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#methode-d-analyse-integree">Méthode d’Analyse Intégrée</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#analyse-d-un-journal-complet">Analyse d’un Journal Complet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#traitement-de-multiple-entrees">Traitement de Multiple Entrées</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#generation-d-insights">Génération d’Insights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#calcul-des-metriques-globales">Calcul des Métriques Globales</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#visualisations">Visualisations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#creation-des-graphiques">Création des Graphiques</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#fonctions-utilitaires">Fonctions Utilitaires</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#donnees-d-exemple">Données d’Exemple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#fonction-d-analyse-complete">Fonction d’Analyse Complète</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#execution-du-programme-principal">Exécution du Programme Principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#script-principal">Script Principal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#reproduction-des-resultats">Reproduction des Résultats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NLP.html#personnalisation">Personnalisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NLP.html#adaptation-a-vos-donnees">Adaptation à Vos Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sleep Disorder Predictor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modèle de Prédiction EMG/EEG Hybride</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modele-de-prediction-emg-eeg-hybride">
+<h1>Modèle de Prédiction EMG/EEG Hybride<a class="headerlink" href="#modele-de-prediction-emg-eeg-hybride" title="Link to this heading"></a></h1>
+<p>Cette Partie présente l’implémentation d’un modèle hybride avancé pour la prédiction de signaux EMG/EEG. Le modèle combine des techniques de convolution multi-échelles, des réseaux LSTM bidirectionnels et un système d’extraction de caractéristiques enrichies pour capturer la complexité des signaux biomédicaux.</p>
+<section id="architecture-du-modele">
+<h2>Architecture du Modèle<a class="headerlink" href="#architecture-du-modele" title="Link to this heading"></a></h2>
+<p>Le modèle utilise une architecture hybride composée de trois composants principaux :</p>
+<ol class="arabic simple">
+<li><p><strong>Convolutions Multi-échelles</strong> : Pour capturer différentes fréquences temporelles</p></li>
+<li><p><strong>LSTM Bidirectionnel</strong> : Pour l’analyse séquentielle des dépendances temporelles</p></li>
+<li><p><strong>Fusion Multi-modale</strong> : Combinaison des signaux bruts et des caractéristiques extraites</p></li>
+</ol>
+<a class="reference internal image-reference" href="_images/Architecture.png"><img alt="Architecture du model En details" src="_images/Architecture.png" style="width: 500px;" />
+</a>
+</section>
+<section id="structure-du-code">
+<h2>Structure du Code<a class="headerlink" href="#structure-du-code" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Extraction de Caractéristiques</strong></p></li>
+</ol>
+<p>La fonction d’extraction de caractéristiques analyse 11 aspects différents du signal :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extraire des caractéristiques avancées du signal EEG/EMG</span>
+
+<span class="sd">    Analyse 11 aspects du signal :</span>
+<span class="sd">    - Statistiques : moyenne, écart-type, min, max, plage</span>
+<span class="sd">    - Dynamique : gradient moyen, variabilité absolue</span>
+<span class="sd">    - Fréquentielle : fréquence dominante</span>
+<span class="sd">    - Complexité : entropie approximative</span>
+<span class="sd">    - Morphologie : pics, passages à zéro</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Validation et préparation des données</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">seq_length</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">seq_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">padding</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+
+    <span class="c1"># Extraction des caractéristiques par fenêtre glissante</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">seq_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">seq_length</span><span class="p">]</span>
+
+        <span class="c1"># Caractéristiques statistiques de base</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">min_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">range_val</span> <span class="o">=</span> <span class="n">max_val</span> <span class="o">-</span> <span class="n">min_val</span>
+
+        <span class="c1"># Analyse des tendances et variations</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">abs_gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">segment</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="c1"># Analyse fréquentielle simplifiée</span>
+        <span class="n">fft_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">segment</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fft_vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dominant_freq_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">fft_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">dominant_freq_val</span> <span class="o">=</span> <span class="n">fft_vals</span><span class="p">[</span><span class="n">dominant_freq_idx</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dominant_freq_val</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Mesure de complexité (entropie approximative)</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">direction_changes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">signbit</span><span class="p">(</span><span class="n">diffs</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">complexity</span> <span class="o">=</span> <span class="n">direction_changes</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">seq_length</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># Caractéristiques morphologiques</span>
+        <span class="n">peak_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">signbit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">segment</span><span class="p">)))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">zero_crossings</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">signbit</span><span class="p">(</span><span class="n">segment</span><span class="p">)))[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Assemblage du vecteur de caractéristiques</span>
+        <span class="n">feature_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">range_val</span><span class="p">,</span>
+            <span class="n">gradient</span><span class="p">,</span> <span class="n">abs_gradient</span><span class="p">,</span>
+            <span class="n">dominant_freq_val</span><span class="p">,</span> <span class="n">complexity</span><span class="p">,</span>
+            <span class="n">peak_count</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">),</span>
+            <span class="n">zero_crossings</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)</span>
+        <span class="p">])</span>
+
+        <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature_vec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Explication</strong> : Cette fonction extrait des caractéristiques multidimensionnelles du signal pour enrichir l’analyse. Elle combine des mesures statistiques classiques avec des indicateurs de complexité et de morphologie du signal.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Création de Séquences Enrichies</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_enriched_sequences</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">,</span> <span class="n">pred_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crée des séquences d&#39;entrée/sortie avec caractéristiques enrichies</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: Données d&#39;entrée normalisées</span>
+<span class="sd">        seq_length: Longueur des séquences d&#39;entrée</span>
+<span class="sd">        pred_length: Nombre de points à prédire</span>
+<span class="sd">        stride: Pas entre les séquences</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X_raw</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Validation de la suffisance des données</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">seq_length</span> <span class="o">+</span> <span class="n">pred_length</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="c1"># Création des séquences par fenêtre glissante</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">seq_length</span> <span class="o">-</span> <span class="n">pred_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+        <span class="n">X_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">pred_length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">seq_length</span> <span class="o">+</span> <span class="n">pred_length</span><span class="p">])</span>
+
+    <span class="n">X_raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_raw</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_raw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="c1"># Extraction des caractéristiques pour chaque séquence</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="n">extract_features</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)</span>
+
+    <span class="c1"># Synchronisation des dimensions</span>
+    <span class="n">min_samples</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_raw</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_features</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">min_samples</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="n">X_raw</span> <span class="o">=</span> <span class="n">X_raw</span><span class="p">[:</span><span class="n">min_samples</span><span class="p">]</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="n">X_features</span><span class="p">[:</span><span class="n">min_samples</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)[:</span><span class="n">min_samples</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">X_raw</span><span class="p">,</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p><strong>Explication</strong> : Cette fonction prépare les données d’entraînement en créant des séquences temporelles et en extrayant les caractéristiques correspondantes pour chaque séquence.</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Architecture du Modèle Hybride</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_advanced_emg_model</span><span class="p">(</span><span class="n">seq_length</span><span class="p">,</span> <span class="n">feature_dim</span><span class="p">,</span> <span class="n">pred_length</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modèle hybride optimisé pour signaux EMG/EEG</span>
+
+<span class="sd">    Architecture:</span>
+<span class="sd">    - Convolutions multi-échelles pour différentes fréquences</span>
+<span class="sd">    - Convolutions dilatées pour dépendances long terme</span>
+<span class="sd">    - LSTM bidirectionnel pour analyse séquentielle</span>
+<span class="sd">    - Fusion de signaux bruts et caractéristiques extraites</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># === DÉFINITION DES ENTRÉES ===</span>
+    <span class="n">input_seq</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">seq_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;raw_sequence&#39;</span><span class="p">)</span>
+    <span class="n">input_features</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">feature_dim</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;extracted_features&#39;</span><span class="p">)</span>
+
+    <span class="c1"># === PRÉTRAITEMENT ===</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">GaussianNoise</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)(</span><span class="n">input_seq</span><span class="p">)</span>  <span class="c1"># Bruit pour généralisation</span>
+
+    <span class="c1"># === CONVOLUTIONS MULTI-ÉCHELLES ===</span>
+    <span class="n">conv_kernels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+    <span class="n">conv_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">kernel_size</span> <span class="ow">in</span> <span class="n">conv_kernels</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kernel_size</span> <span class="o">&lt;=</span> <span class="n">seq_length</span><span class="p">:</span>
+            <span class="n">conv</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span>
+                <span class="n">filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span>
+                <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span>
+            <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">conv</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()(</span><span class="n">conv</span><span class="p">)</span>
+            <span class="n">conv_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conv</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">conv_outputs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kernel sizes incompatibles avec seq_length=</span><span class="si">{</span><span class="n">seq_length</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">()(</span><span class="n">conv_outputs</span><span class="p">)</span>
+
+    <span class="c1"># === CONVOLUTIONS DILATÉES ===</span>
+    <span class="n">dilation_rates</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+    <span class="n">dilated_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">dilation_rate</span> <span class="ow">in</span> <span class="n">dilation_rates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dilation_rate</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">seq_length</span><span class="p">:</span>
+            <span class="n">dilated_conv</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span>
+                <span class="n">filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;causal&#39;</span><span class="p">,</span>
+                <span class="n">dilation_rate</span><span class="o">=</span><span class="n">dilation_rate</span><span class="p">,</span>
+                <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span>
+            <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">dilated_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dilated_conv</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dilated_outputs</span><span class="p">:</span>
+        <span class="n">dilated_conv</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">dilated_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dilated_conv</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">()(</span><span class="n">dilated_outputs</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># === BRANCHE LSTM BIDIRECTIONNELLE ===</span>
+    <span class="n">lstm_out</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">lstm_out</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">()(</span><span class="n">lstm_out</span><span class="p">)</span>
+    <span class="n">lstm_out</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)(</span><span class="n">lstm_out</span><span class="p">)</span>
+    <span class="n">lstm_out</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">))(</span><span class="n">lstm_out</span><span class="p">)</span>
+
+    <span class="c1"># === TRAITEMENT DES CARACTÉRISTIQUES ===</span>
+    <span class="n">features_dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">input_features</span><span class="p">)</span>
+    <span class="n">features_dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">features_dense</span><span class="p">)</span>
+
+    <span class="c1"># === FUSION DES BRANCHES ===</span>
+    <span class="n">combined</span> <span class="o">=</span> <span class="n">Concatenate</span><span class="p">()([</span><span class="n">lstm_out</span><span class="p">,</span> <span class="n">features_dense</span><span class="p">])</span>
+
+    <span class="c1"># === COUCHES DE SORTIE ===</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">combined</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;elu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">pred_length</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># === COMPILATION ===</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">input_seq</span><span class="p">,</span> <span class="n">input_features</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">clipnorm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+<p><strong>Explication</strong> : Le cœur du modèle combine plusieurs approches complémentaires. Les convolutions multi-échelles capturent différentes fréquences du signal, les LSTM analysent les dépendances temporelles, et la fusion permet d’exploiter à la fois les signaux bruts et les caractéristiques extraites.</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Prédiction Réaliste Adaptative</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forecast_realistic_emg</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">initial_sequence</span><span class="p">,</span> <span class="n">steps_ahead</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prévision réaliste avec recalcul adaptatif des caractéristiques</span>
+
+<span class="sd">    Utilise une approche adaptative pour maintenir la naturalité du signal :</span>
+<span class="sd">    - Recalcul des caractéristiques à chaque étape</span>
+<span class="sd">    - Stabilisation basée sur la volatilité historique</span>
+<span class="sd">    - Ajout de bruit adaptatif pour réalisme</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence_length</span> <span class="o">=</span> <span class="n">initial_sequence</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">future_predictions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_sequence</span> <span class="o">=</span> <span class="n">initial_sequence</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Analyse de la volatilité historique</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">))</span>
+        <span class="n">current_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">current_sequence</span><span class="p">,</span> <span class="n">padding</span><span class="p">])</span>
+
+    <span class="n">recent_variations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+    <span class="n">variation_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">recent_variations</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps_ahead</span><span class="p">):</span>
+        <span class="c1"># Préparation de la séquence courante</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sequence_length</span><span class="p">:</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sequence_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">))</span>
+            <span class="n">temp_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">current_sequence</span><span class="p">,</span> <span class="n">padding</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp_sequence</span> <span class="o">=</span> <span class="n">current_sequence</span><span class="p">[</span><span class="o">-</span><span class="n">sequence_length</span><span class="p">:]</span>
+
+        <span class="c1"># Extraction des caractéristiques actualisées</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">current_features_array</span> <span class="o">=</span> <span class="n">extract_features</span><span class="p">(</span><span class="n">temp_sequence</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_features_array</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Extraction échoué&quot;</span><span class="p">)</span>
+            <span class="n">current_features</span> <span class="o">=</span> <span class="n">current_features_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">current_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+
+        <span class="c1"># Prédiction du point suivant</span>
+        <span class="n">next_point_scaled</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">temp_sequence</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+             <span class="n">current_features</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)],</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># === STABILISATION ADAPTATIVE ===</span>
+        <span class="n">last_point</span> <span class="o">=</span> <span class="n">current_sequence</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">max_jump</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="n">variation_history</span>
+
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">next_point_scaled</span> <span class="o">-</span> <span class="n">last_point</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_jump</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">next_point_scaled</span> <span class="o">-</span> <span class="n">last_point</span><span class="p">)</span>
+            <span class="n">next_point_scaled</span> <span class="o">=</span> <span class="n">last_point</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">max_jump</span>
+
+        <span class="c1"># === BRUIT ADAPTATIF ===</span>
+        <span class="n">noise_scale</span> <span class="o">=</span> <span class="n">variation_history</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">noise_scale</span><span class="p">)</span> <span class="ow">or</span> <span class="n">noise_scale</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">noise_scale</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">noise_scale</span><span class="p">)</span>
+        <span class="n">next_point_with_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">next_point_scaled</span> <span class="o">+</span> <span class="n">noise</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Mise à jour pour itération suivante</span>
+        <span class="n">future_predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_point_with_noise</span><span class="p">)</span>
+        <span class="n">current_sequence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_sequence</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">next_point_with_noise</span><span class="p">)</span>
+
+        <span class="c1"># Mise à jour de l&#39;historique de volatilité</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_variation</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">future_predictions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">future_predictions</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">variation_history</span> <span class="o">=</span> <span class="mf">0.85</span> <span class="o">*</span> <span class="n">variation_history</span> <span class="o">+</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">new_variation</span>
+
+    <span class="n">future_predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">future_predictions</span><span class="p">)</span>
+
+    <span class="c1"># Dénormalisation si nécessaire</span>
+    <span class="k">if</span> <span class="n">scaler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">future_predictions</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span>
+            <span class="n">future_predictions</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">future_predictions</span>
+</pre></div>
+</div>
+<p><strong>Explication</strong> : Cette fonction implémente une prédiction adaptative qui maintient la cohérence du signal en ajustant dynamiquement les paramètres de stabilisation selon la volatilité observée.</p>
+<ol class="arabic simple" start="5">
+<li><p><strong>Configuration du Modèle</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">EMGModelConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration optimisée pour signaux EMG/EEG&quot;&quot;&quot;</span>
+
+    <span class="c1"># Paramètres temporels</span>
+    <span class="n">SEQUENCE_LENGTH</span> <span class="o">=</span> <span class="mi">30</span>    <span class="c1"># Fenêtre d&#39;analyse optimale</span>
+    <span class="n">PRED_LENGTH</span> <span class="o">=</span> <span class="mi">1</span>         <span class="c1"># Prédiction point par point</span>
+    <span class="n">STRIDE</span> <span class="o">=</span> <span class="mi">1</span>              <span class="c1"># Chevauchement maximal</span>
+
+    <span class="c1"># Paramètres d&#39;entraînement</span>
+    <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>         <span class="c1"># Batch adapté pour stabilité</span>
+    <span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">50</span>             <span class="c1"># Équilibre apprentissage/surapprentissage</span>
+    <span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.001</span>   <span class="c1"># Avec clippage de gradient</span>
+
+    <span class="c1"># Paramètres de données</span>
+    <span class="n">SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">150000</span>    <span class="c1"># Taille d&#39;échantillon recommandée</span>
+    <span class="n">TRAIN_SPLIT</span> <span class="o">=</span> <span class="mf">0.8</span>       <span class="c1"># Répartition entraînement/test</span>
+    <span class="n">VAL_SPLIT</span> <span class="o">=</span> <span class="mf">0.2</span>         <span class="c1"># Validation croisée</span>
+</pre></div>
+</div>
+<p><strong>Explication</strong> : Cette classe centralise tous les hyperparamètres optimisés pour les signaux biomédicaux.</p>
+</section>
+<section id="usage-et-implementation">
+<h2>Usage et Implémentation<a class="headerlink" href="#usage-et-implementation" title="Link to this heading"></a></h2>
+<p>Exemple d’utilisation complète :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import des modules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emg_model_creation</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_advanced_emg_model</span><span class="p">,</span> <span class="n">extract_features</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emg_model_creation</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_enriched_sequences</span><span class="p">,</span> <span class="n">forecast_realistic_emg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emg_model_creation</span><span class="w"> </span><span class="kn">import</span> <span class="n">EMGModelConfig</span>
+
+<span class="c1"># Configuration</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">EMGModelConfig</span><span class="p">()</span>
+
+<span class="c1"># Préparation des données</span>
+<span class="n">X_raw</span><span class="p">,</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">create_enriched_sequences</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">SEQUENCE_LENGTH</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">PRED_LENGTH</span>
+<span class="p">)</span>
+
+<span class="c1"># Création du modèle</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_advanced_emg_model</span><span class="p">(</span>
+    <span class="n">seq_length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">SEQUENCE_LENGTH</span><span class="p">,</span>
+    <span class="n">feature_dim</span><span class="o">=</span><span class="n">X_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Entraînement</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">X_raw</span><span class="p">,</span> <span class="n">X_features</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">validation_split</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">VAL_SPLIT</span>
+<span class="p">)</span>
+
+<span class="c1"># Prédiction future</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">forecast_realistic_emg</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">initial_sequence</span><span class="p">,</span> <span class="n">steps_ahead</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Des resultats De prediction et d’entrainement tiree a partir d’un exemple</strong></p>
+<a class="reference internal image-reference" href="_images/Comparaison.png"><img alt="Comparaison entre prediction et reel" src="_images/Comparaison.png" style="width: 500px;" />
+</a>
+<p>On observe que les prédictions suivent bien la tendance générale du signal réel, avec un écart relativement faible entre les deux courbes.
+Les zones grisées mettent en évidence les écarts, qui restent limités, ce qui confirme visuellement la bonne performance du modèle.</p>
+<a class="reference internal image-reference" href="_images/Forcast.png"><img alt="Resultat du Forcast" src="_images/Forcast.png" style="width: 500px;" />
+</a>
+<a class="reference internal image-reference" href="_images/emg_training_loss.png"><img alt="loss" src="_images/emg_training_loss.png" style="width: 500px;" />
+</a>
+<a class="reference internal image-reference" href="_images/emg_training_loss.png"><img alt="loss" src="_images/emg_training_loss.png" style="width: 500px;" />
+</a>
+<a class="reference internal image-reference" href="_images/Test.png"><img alt="Resultat du Test" src="_images/Test.png" style="width: 500px;" />
+</a>
+<a class="reference internal image-reference" href="_images/evaluation.png"><img alt="les metriques d'evaluation" src="_images/evaluation.png" style="width: 500px;" />
+</a>
+<p>Le rapport montre que le modèle de prédiction est performant et bien équilibré.
+Les erreurs (MSE, RMSE, MAE) sont très faibles aussi bien sur les données d’entraînement que de test, ce qui indique une bonne précision.
+Le coefficient de détermination R² est élevé (0.86 pour l’entraînement et 0.92 pour le test), montrant que le modèle explique bien la variabilité des données.
+De plus, le ratio MSE entraînement/test est de 2.34, ce qui reste raisonnable et ne signale pas de surapprentissage. Globalement, le modèle semble bien généraliser aux nouvelles données.</p>
+</section>
+<section id="avantages-de-l-architecture">
+<h2>Avantages de l’Architecture<a class="headerlink" href="#avantages-de-l-architecture" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Multi-échelle</strong> : Capture différentes composantes fréquentielles</p></li>
+<li><p><strong>Adaptative</strong> : Ajustement dynamique selon les caractéristiques du signal</p></li>
+<li><p><strong>Robuste</strong> : Gestion des cas limites et validation des données</p></li>
+<li><p><strong>Réaliste</strong> : Maintien de la cohérence physiologique des prédictions</p></li>
+</ol>
+</section>
+<section id="optimisations-integrees">
+<h2>Optimisations Intégrées<a class="headerlink" href="#optimisations-integrees" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Normalisation par couches</strong> pour stabilité d’entraînement</p></li>
+<li><p><strong>Clippage de gradient</strong> pour éviter l’explosion des gradients</p></li>
+<li><p><strong>Dropout adaptatif</strong> pour régularisation</p></li>
+<li><p><strong>Bruit gaussien</strong> pour améliorer la généralisation</p></li>
+<li><p><strong>Validation continue</strong> des dimensions et types de données</p></li>
+</ul>
+<p>Cette architecture représente une approche moderne et robuste pour la prédiction de signaux biomédicaux complexes.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data_preparation.html" class="btn btn-neutral float-left" title="Préparation des Données" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sleep_disorder_calculation.html" class="btn btn-neutral float-right" title="Calcul et Interprétation des Troubles du Sommeil à partir des Signaux EEG/EMG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amri Maryam.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
