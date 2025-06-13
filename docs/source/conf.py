@@ -2,7 +2,6 @@
 
 import os
 import sys
-import sphinx_rtd_theme
 
 # -- Configuration de base --
 project = 'Sleep Disorder Predictor'
@@ -16,12 +15,10 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx.ext.mathjax',
-    'sphinx_rtd_theme',
 ]
 
 # -- Thème RTD --
 html_theme = 'sphinx_rtd_theme'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # -- Options du thème --
 html_theme_options = {
@@ -39,12 +36,14 @@ html_theme_options = {
 
 # -- Chemins statiques --
 html_static_path = ['_static']
+
+# -- Fichiers CSS/JS personnalisés (décommentez si les fichiers existent)
 html_css_files = ['custom.css']
 html_js_files = ['custom.js']
 
-# -- Logo --
+# -- Logo (décommentez si le fichier existe)
 html_logo = '_static/images/logo.png'
-#html_favicon = '_static/images/favicon.ico'
+html_favicon = '_static/images/favicon.ico'
 
 # -- Sidebar --
 html_sidebars = {
