@@ -5,8 +5,8 @@ import sys
 
 # -- Configuration de base --
 project = 'Sleep Disorder Predictor'
-copyright = '2025, Amri Maryam'
-author = 'Amri Maryam'
+copyright = '2025, Amri Maryam Et BOUGHNAM Houda'
+author = 'Amri Maryam ET BOUGHNAM Houda'
 release = '1.0.0'
 
 # -- Extensions --
